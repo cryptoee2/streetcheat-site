@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StreetCheat Privacy Policy</title>
+<meta name="description" content="What StreetCheat collects, why, who helps us run it, and how to delete your account.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  /* The app's own tokens (app/src/theme.ts): grayscale, Inter, one amber accent. */
+  :root {
+    --bg: #FFFFFF;
+    --text: #111111;
+    --text-2: #4B5563;
+    --muted: #6B7280;
+    --line: #E5E7EB;
+    --field: #F3F4F6;
+    --amber: #B45309;
+    --amber-bg: #FEF3C7;
+    --amber-line: #FCD34D;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0F1115;
+      --text: #F3F4F6;
+      --text-2: #D4D4D8;
+      --muted: #A1A1AA;
+      --line: #27272A;
+      --field: #1C1F26;
+      --amber: #FBBF24;
+      --amber-bg: #33260A;
+      --amber-line: #D97706;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 400 16px/1.65 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: env(safe-area-inset-top, 0px) 20px env(safe-area-inset-bottom, 0px);
+  }
+  main { max-width: 42rem; margin: 0 auto; padding-block: 48px 72px; }
+  header { display: grid; gap: 6px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .brand .cone { width: 22px; height: 22px; flex: none; }
+  h1 { font-size: clamp(28px, 6vw, 36px); line-height: 1.15; letter-spacing: -0.025em; margin: 18px 0 0; font-weight: 700; text-wrap: balance; }
+  .updated { color: var(--muted); font-size: 14px; margin: 0; font-variant-numeric: tabular-nums; }
+  .lede { font-size: 18px; color: var(--text-2); margin: 10px 0 0; }
+  nav.toc { padding-block: 22px; border-bottom: 1px solid var(--line); }
+  nav.toc p { margin: 0 0 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  nav.toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+  nav.toc a { display: inline-block; padding: 4px 10px; border-radius: 999px; background: var(--field); color: var(--text-2); font-size: 14px; text-decoration: none; }
+  nav.toc a:hover { color: var(--text); }
+  section { padding-block: 30px 6px; }
+  h2 { font-size: 21px; line-height: 1.3; letter-spacing: -0.015em; margin: 0 0 10px; font-weight: 700; text-wrap: balance; scroll-margin-top: 16px; }
+  h3 { font-size: 16px; margin: 22px 0 4px; font-weight: 600; }
+  p, ul { margin: 0 0 14px; }
+  ul { padding-left: 1.2em; }
+  li { margin-bottom: 6px; }
+  li::marker { color: var(--muted); }
+  a { color: inherit; text-decoration-color: var(--muted); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--text); }
+  a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 3px; }
+  strong { font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 6px 0 16px; border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--field); }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  /* The one place the accent speaks: the thing people most often come here to do. */
+  .callout { background: var(--amber-bg); border: 1px solid var(--amber-line); border-radius: 12px; padding: 18px 20px; margin: 6px 0 16px; }
+  .callout h2 { color: var(--text); }
+  .callout ol { margin: 0 0 12px; padding-left: 1.3em; }
+  .email { font-weight: 600; user-select: all; }
+  footer { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand">
+      <svg class="cone" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 3h5l4.6 15H4.9z" fill="#B45309"/><path d="M8.6 8h6.8l.9 3H7.7zM7.1 13h9.8l.9 3H6.2z" fill="#FEF3C7"/><rect x="3" y="18" width="18" height="3" rx="1.2" fill="#6B7280"/></svg>
+      StreetCheat
+    </div>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated September 22, 2026</p>
+    <p class="lede">StreetCheat checks the drives you make most against public road-closure data and tells you when something is in your way. This page explains what that takes from you, who helps us do it, and how to delete it all.</p>
+  </header>
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#collect">What we collect</a></li>
+      <li><a href="#use">How we use it</a></li>
+      <li><a href="#providers">Who helps us</a></li>
+      <li><a href="#recipients">People you add</a></li>
+      <li><a href="#retention">How long we keep it</a></li>
+      <li><a href="#delete-account">Delete your account</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section>
+    <h2 id="who">Who we are</h2>
+    <p>StreetCheat is operated by <strong>Hantis USA, LLC</strong> ("we", "us"). This policy covers the StreetCheat app for Android and iPhone and the alert emails and notifications it sends.</p>
+  </section>
+
+  <section>
+    <h2 id="collect">What we collect</h2>
+    <h3>Your account</h3>
+    <ul>
+      <li><strong>Email address</strong>, and a password if you sign up with email. Passwords are stored only as a secure hash by our sign-in provider; we never see them.</li>
+      <li>If you sign in with <strong>Google</strong> or <strong>Apple</strong>, we receive the email address (and, with Apple, the name) that the service shares with us. With Apple you can choose to hide your email; we then only see a private relay address.</li>
+    </ul>
+    <h3>Your routes</h3>
+    <ul>
+      <li>The <strong>name, starting address and destination address</strong> you enter for each route, the days you drive, your usual departure time, and for rotating shifts, your on/off pattern.</li>
+      <li>The <strong>driving path</strong> between those addresses, which we look up so we can check it for closures and draw it on the map.</li>
+      <li>The <strong>email addresses</strong> you list to receive a route's alerts (up to five; see <a href="#recipients">People you add</a>).</li>
+    </ul>
+    <h3>Notifications and settings</h3>
+    <ul>
+      <li>A <strong>push token</strong> for your phone, so we can send it notifications, and whether the phone is Android or iPhone. It is removed when you sign out.</li>
+      <li>Your <strong>notification settings</strong>: when the daily summary arrives, quiet hours, morning reminders and similar choices.</li>
+      <li>A history of the <strong>notifications</strong> we sent you, so the app can show them again.</li>
+    </ul>
+    <h3>Feedback you give</h3>
+    <ul>
+      <li>Closures you <strong>report</strong> as wrong or over, your <strong>thumbs up or down</strong> on a closure, and whether you found a notification helpful.</li>
+    </ul>
+    <h3>What we don't collect</h3>
+    <ul>
+      <li>We do <strong>not</strong> use your phone's location. StreetCheat only knows the addresses you type.</li>
+      <li>We don't access your contacts, photos, camera or microphone.</li>
+      <li>The app contains <strong>no advertising and no analytics or tracking tools</strong>.</li>
+      <li>We <strong>never sell</strong> your information or share it for advertising.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 id="use">How we use it</h2>
+    <ul>
+      <li>To find the driving path for each route and check it, about once an hour, against closure information published by state transportation departments and city governments.</li>
+      <li>To send you, and the people you added, the alerts you asked for: notifications, a daily summary email, and a weekly look ahead.</li>
+      <li>To show you your routes, closures and past notifications in the app.</li>
+      <li>To judge how reliable a closure is. Reports and votes from everyone who drives past it are combined into a confidence level that all users see. Other users never see who voted or reported.</li>
+      <li>To keep the service working, answer your messages, and prevent abuse (for example, limits on the number of routes and email recipients).</li>
+    </ul>
+    <p>When we check public closure sources, we ask them only about the <strong>map area</strong> around the routes we check. We never send them your addresses, your name or your email.</p>
+  </section>
+
+  <section>
+    <h2 id="providers">Who helps us run StreetCheat</h2>
+    <p>These companies process information for us, only to provide the service and under their own privacy and security commitments. None of them may use it for their own purposes, such as advertising.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Provider</th><th>What they do</th><th>What they receive</th></tr></thead>
+        <tbody>
+          <tr><td>Supabase</td><td>Hosts our database and sign-in</td><td>Your account and everything listed above</td></tr>
+          <tr><td>Google</td><td>Driving directions, the in-app map on Android, Google sign-in, and delivery of Android notifications (Firebase Cloud Messaging)</td><td>Route addresses (for directions), notification contents, and what Google sign-in normally shares</td></tr>
+          <tr><td>OpenRouteService (HeiGIT)</td><td>Backup service for turning addresses into map positions and directions</td><td>Route addresses, only when used as a backup</td></tr>
+          <tr><td>Apple</td><td>Sign in with Apple on iPhone</td><td>What Sign in with Apple normally shares</td></tr>
+          <tr><td>Expo</td><td>Passes notifications to Apple and Google, and delivers app updates</td><td>Push token and notification contents</td></tr>
+          <tr><td>Resend</td><td>Delivers our emails</td><td>Recipient addresses and the email contents</td></tr>
+          <tr><td>GitHub</td><td>Runs our hourly route checks</td><td>Route and alert information while a check runs</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>We may also disclose information if the law requires it, or to protect the rights and safety of our users or others. If StreetCheat is sold or merged, your information would move with it under this policy.</p>
+  </section>
+
+  <section>
+    <h2 id="recipients">People you add to a route</h2>
+    <p>You can list up to five email addresses to receive a route's alert emails, for example a family member who makes the same drive. Please add only people who want these emails. We use those addresses only to send that route's alerts. Anyone who no longer wants them can ask us to stop at <span class="email">support@streetcheat.com</span>, and the route's owner can remove them in the app at any time.</p>
+  </section>
+
+  <section>
+    <h2 id="retention">How long we keep it</h2>
+    <ul>
+      <li>Your account, routes, settings, reports and votes are kept for as long as you have an account.</li>
+      <li>Closure alerts for a route are replaced every time we check it, so only current ones are kept.</li>
+      <li>Deleting a route deletes its alerts and reminders.</li>
+      <li>When you delete your account, everything tied to it is deleted from our systems within 30 days.</li>
+    </ul>
+  </section>
+
+  <section class="callout" aria-labelledby="delete-account">
+    <h2 id="delete-account">Delete your account</h2>
+    <p><strong>In the app:</strong></p>
+    <ol>
+      <li>Open <strong>Settings</strong>.</li>
+      <li>Tap <strong>Delete account</strong> and confirm.</li>
+    </ol>
+    <p>This deletes your account, routes, settings, notification history, reports and votes.</p>
+    <p><strong>Without the app:</strong> email <span class="email">support@streetcheat.com</span> from the address on your account, with the subject "Delete my account". We'll confirm and complete it within 30 days.</p>
+  </section>
+
+  <section>
+    <h2 id="rights">Your choices</h2>
+    <ul>
+      <li>You can edit or delete any route, and turn notifications or emails off, in the app.</li>
+      <li>You can ask us for a copy of your information, or to correct or delete it, at <span class="email">support@streetcheat.com</span>. Depending on where you live, you may have further rights under local law; we'll honor them.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 id="security">Security</h2>
+    <p>Information travels between the app and our servers over encrypted connections. Each person's data is walled off in our database so only they can read it, and only our checking service can read across accounts to do its job. No system is perfectly secure, but we work to protect your information and to collect only what StreetCheat needs.</p>
+  </section>
+
+  <section>
+    <h2 id="children">Children</h2>
+    <p>StreetCheat is meant for drivers and isn't directed at children under 13. We don't knowingly collect information from them. If you think a child has given us information, contact us and we'll delete it.</p>
+  </section>
+
+  <section>
+    <h2 id="where">Where your data is processed</h2>
+    <p>StreetCheat is run from the United States, and your information is processed in the United States and wherever our providers operate.</p>
+  </section>
+
+  <section>
+    <h2 id="changes">Changes to this policy</h2>
+    <p>If we change this policy, we'll update the date at the top. For significant changes, we'll also tell you in the app or by email before they take effect.</p>
+  </section>
+
+  <section>
+    <h2 id="contact">Contact</h2>
+    <p>Questions or requests about your privacy: <span class="email">support@streetcheat.com</span><br>Hantis USA, LLC</p>
+  </section>
+
+  <footer>© 2026 Hantis USA, LLC. StreetCheat is not affiliated with any transportation department or city whose public closure data it uses.</footer>
+</main>
+</body>
+</html>
