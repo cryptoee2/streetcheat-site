@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StreetCheat</title>
+<meta name="description" content="StreetCheat watches the drives you make most and tells you when a road closure is in your way, before you leave.">
+<link rel="icon" type="image/png" href="/icon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  /* Same tokens as privacy/index.html (from app/src/theme.ts): grayscale, Inter, one amber accent. */
+  :root {
+    --bg: #FFFFFF;
+    --text: #111111;
+    --text-2: #4B5563;
+    --muted: #6B7280;
+    --line: #E5E7EB;
+    --field: #F3F4F6;
+    --amber: #B45309;
+    --amber-bg: #FEF3C7;
+    --amber-line: #FCD34D;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0F1115;
+      --text: #F3F4F6;
+      --text-2: #D4D4D8;
+      --muted: #A1A1AA;
+      --line: #27272A;
+      --field: #1C1F26;
+      --amber: #FBBF24;
+      --amber-bg: #33260A;
+      --amber-line: #D97706;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 400 16px/1.65 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: env(safe-area-inset-top, 0px) 20px env(safe-area-inset-bottom, 0px);
+  }
+  main { max-width: 42rem; margin: 0 auto; padding-block: 48px 72px; }
+  header { padding-bottom: 36px; border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .brand .cone { width: 22px; height: 22px; flex: none; }
+  h1 { font-size: clamp(32px, 8vw, 48px); line-height: 1.08; letter-spacing: -0.03em; margin: 40px 0 0; font-weight: 700; text-wrap: balance; }
+  .lede { font-size: 19px; color: var(--text-2); margin: 16px 0 0; max-width: 34rem; }
+  .soon { display: inline-flex; align-items: center; gap: 8px; margin-top: 26px; padding: 8px 14px; border-radius: 999px; background: var(--amber-bg); border: 1px solid var(--amber-line); font-size: 14px; font-weight: 600; }
+  .soon::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+  section { padding-block: 34px 4px; }
+  h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 16px; }
+  ol.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; counter-reset: step; }
+  ol.steps li { display: grid; grid-template-columns: 32px 1fr; gap: 14px; counter-increment: step; }
+  ol.steps li::before { content: counter(step); width: 32px; height: 32px; border-radius: 50%; background: var(--field); display: grid; place-items: center; font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums; }
+  ol.steps strong { display: block; font-weight: 600; }
+  ol.steps span { color: var(--text-2); }
+  ul.points { margin: 0; padding-left: 1.2em; }
+  ul.points li { margin-bottom: 8px; }
+  ul.points li::marker { color: var(--muted); }
+  p { margin: 0 0 14px; color: var(--text-2); }
+  a { color: inherit; text-decoration-color: var(--muted); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--text); }
+  a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 3px; }
+  strong { font-weight: 600; color: var(--text); }
+  .email { font-weight: 600; color: var(--text); user-select: all; }
+  footer { margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: grid; gap: 8px; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand">
+      <svg class="cone" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 3h5l4.6 15H4.9z" fill="#B45309"/><path d="M8.6 8h6.8l.9 3H7.7zM7.1 13h9.8l.9 3H6.2z" fill="#FEF3C7"/><rect x="3" y="18" width="18" height="3" rx="1.2" fill="#6B7280"/></svg>
+      StreetCheat
+    </div>
+    <h1>Know about closures before they happen.</h1>
+    <p class="lede">StreetCheat watches the drives you make most (home to work, school drop-off, the weekly run to the job site) and tells you when a road closure is in your way, before you leave.</p>
+    <div class="soon">Coming soon to Android and iPhone</div>
+  </header>
+
+  <section>
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><div><strong>Add a route once.</strong> <span>Where from, where to, which days, and what time you leave.</span></div></li>
+      <li><div><strong>We check it every hour.</strong> <span>Against official closure information from state transportation departments and city governments.</span></div></li>
+      <li><div><strong>You hear about it first.</strong> <span>A notification when something is on your way, and if you like, an email summary the evening before.</span></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>What you get</h2>
+    <ul class="points">
+      <li>Closures on your actual route, in your direction of travel, not every closure in the city.</li>
+      <li>Only the ones that matter for when you drive. A daytime lane closure won't bother you on a 5 AM commute.</li>
+      <li>A week-ahead look every Sunday, morning-of reminders, and quiet hours.</li>
+      <li>Rotating shifts: 1 on / 2 off, 4 on / 4 off and more.</li>
+      <li>Share a route's alerts by email with up to five people who make the same drive.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Where it works</h2>
+    <p>Highways in Texas and more than 20 other states, plus city streets in Dallas, Houston, Austin, New York, Chicago, Philadelphia, San Francisco, Seattle, Denver, Pittsburgh and more than 130 other cities and counties. Each route shows which sources it's checked against, and tells you plainly when an area isn't covered yet.</p>
+  </section>
+
+  <section>
+    <h2>Private by design</h2>
+    <p>StreetCheat never uses your phone's location, only the addresses you type. No ads, no tracking, and we never sell your data. <a href="/privacy/">Read the privacy policy</a>.</p>
+  </section>
+
+  <footer>
+    <nav aria-label="Site">
+      <a href="/privacy/">Privacy policy</a>
+      <a href="/privacy/#delete-account">Delete your account</a>
+      <span>Support: <span class="email">support@streetcheat.com</span></span>
+    </nav>
+    <div>© 2026 Hantis USA, LLC. StreetCheat uses public closure data and is not affiliated with any transportation department or city.</div>
+  </footer>
+</main>
+</body>
+</html>
