@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StreetCheat Data Sources</title>
+<meta name="description" content="Every public road-closure source StreetCheat reads, with links to the official data. StreetCheat is not affiliated with any government agency.">
+<link rel="icon" type="image/png" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  /* The app's own tokens (app/src/theme.ts): grayscale, Inter, one amber accent. */
+  :root {
+    --bg: #FFFFFF;
+    --text: #111111;
+    --text-2: #4B5563;
+    --muted: #6B7280;
+    --line: #E5E7EB;
+    --field: #F3F4F6;
+    --amber: #B45309;
+    --amber-bg: #FEF3C7;
+    --amber-line: #FCD34D;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0F1115;
+      --text: #F3F4F6;
+      --text-2: #D4D4D8;
+      --muted: #A1A1AA;
+      --line: #27272A;
+      --field: #1C1F26;
+      --amber: #FBBF24;
+      --amber-bg: #33260A;
+      --amber-line: #D97706;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 400 16px/1.65 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: env(safe-area-inset-top, 0px) 20px env(safe-area-inset-bottom, 0px);
+  }
+  main { max-width: 42rem; margin: 0 auto; padding-block: 48px 72px; }
+  header { display: grid; gap: 6px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .brand .cone { width: 22px; height: 22px; flex: none; }
+  h1 { font-size: clamp(28px, 6vw, 36px); line-height: 1.15; letter-spacing: -0.025em; margin: 18px 0 0; font-weight: 700; text-wrap: balance; }
+  .updated { color: var(--muted); font-size: 14px; margin: 0; font-variant-numeric: tabular-nums; }
+  .lede { font-size: 18px; color: var(--text-2); margin: 10px 0 0; }
+  nav.toc { padding-block: 22px; border-bottom: 1px solid var(--line); }
+  nav.toc p { margin: 0 0 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  nav.toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+  nav.toc a { display: inline-block; padding: 4px 10px; border-radius: 999px; background: var(--field); color: var(--text-2); font-size: 14px; text-decoration: none; }
+  nav.toc a:hover { color: var(--text); }
+  section { padding-block: 30px 6px; }
+  h2 { font-size: 21px; line-height: 1.3; letter-spacing: -0.015em; margin: 0 0 10px; font-weight: 700; text-wrap: balance; scroll-margin-top: 16px; }
+  h3 { font-size: 16px; margin: 22px 0 4px; font-weight: 600; }
+  p, ul { margin: 0 0 14px; }
+  ul { padding-left: 1.2em; }
+  li { margin-bottom: 6px; }
+  li::marker { color: var(--muted); }
+  a { color: inherit; text-decoration-color: var(--muted); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--text); }
+  a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 3px; }
+  strong { font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 6px 0 16px; border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--field); }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  /* The one place the accent speaks: the thing people most often come here to do. */
+  .callout { background: var(--amber-bg); border: 1px solid var(--amber-line); border-radius: 12px; padding: 18px 20px; margin: 6px 0 16px; }
+  .callout h2 { color: var(--text); }
+  .callout ol { margin: 0 0 12px; padding-left: 1.3em; }
+  .email { font-weight: 600; user-select: all; }
+  footer { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+</style>
+<style>
+  ul.sources { list-style: none; padding: 0; margin: 0 0 14px; }
+  ul.sources li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+  ul.sources li span { color: var(--text); }
+  ul.sources li a { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 45%; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand">
+      <svg class="cone" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 3h5l4.6 15H4.9z" fill="#B45309"/><path d="M8.6 8h6.8l.9 3H7.7zM7.1 13h9.8l.9 3H6.2z" fill="#FEF3C7"/><rect x="3" y="18" width="18" height="3" rx="1.2" fill="#6B7280"/></svg>
+      StreetCheat
+    </div>
+    <h1>Data sources</h1>
+    <p class="updated">Updated October 3, 2026</p>
+    <p class="lede">StreetCheat reads public road-closure information published by the government agencies listed below, and links to each one's official data.</p>
+  </header>
+
+  <section>
+    <div class="callout">
+      <h2>Not a government app</h2>
+      <p>StreetCheat is an independent app made by Hantis USA, LLC. It is not affiliated with, endorsed by, or acting for any federal, state, county or city government or transportation department. Closure information comes from these agencies' public data; it can change without notice, and the agency's own announcements and the signs on the road always come first.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Federal</h2>
+    <ul class="sources">
+      <li><span>U.S. DOT WZDx feed registry</span><a href="https://data.transportation.gov/Transportation/Work-Zone-Data-Exchange-WZDx-Feed-Registry/69qe-yiui" rel="nofollow noopener">data.transportation.gov</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>State transportation departments and toll roads (67)</h2>
+    <ul class="sources">
+      <li><span>Alabama DOT (ALGO Traffic)</span><a href="https://algoapi.caps.ua.edu/v4.0/TrafficEvents" rel="nofollow noopener">algoapi.caps.ua.edu</a></li>
+      <li><span>Alaska DOT&amp;PF</span><a href="https://511.alaska.gov/api/wzdx" rel="nofollow noopener">511.alaska.gov</a></li>
+      <li><span>Arizona DOT</span><a href="https://az511.gov/api/wzdx" rel="nofollow noopener">az511.gov</a></li>
+      <li><span>Arkansas DOT (IDriveArkansas), AR</span><a href="https://layers.idrivearkansas.com/laneclosures.geojson" rel="nofollow noopener">layers.idrivearkansas.com</a></li>
+      <li><span>Arkansas DOT road closures, AR</span><a href="https://layers.idrivearkansas.com/closures.geojson" rel="nofollow noopener">layers.idrivearkansas.com</a></li>
+      <li><span>Caltrans District 1</span><a href="https://cwwp2.dot.ca.gov/data/d1/lcs/lcsStatusD01.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 10</span><a href="https://cwwp2.dot.ca.gov/data/d10/lcs/lcsStatusD10.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 11</span><a href="https://cwwp2.dot.ca.gov/data/d11/lcs/lcsStatusD11.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 12</span><a href="https://cwwp2.dot.ca.gov/data/d12/lcs/lcsStatusD12.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 2</span><a href="https://cwwp2.dot.ca.gov/data/d2/lcs/lcsStatusD02.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 3</span><a href="https://cwwp2.dot.ca.gov/data/d3/lcs/lcsStatusD03.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 4</span><a href="https://cwwp2.dot.ca.gov/data/d4/lcs/lcsStatusD04.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 5</span><a href="https://cwwp2.dot.ca.gov/data/d5/lcs/lcsStatusD05.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 6</span><a href="https://cwwp2.dot.ca.gov/data/d6/lcs/lcsStatusD06.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 7</span><a href="https://cwwp2.dot.ca.gov/data/d7/lcs/lcsStatusD07.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 8</span><a href="https://cwwp2.dot.ca.gov/data/d8/lcs/lcsStatusD08.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>Caltrans District 9</span><a href="https://cwwp2.dot.ca.gov/data/d9/lcs/lcsStatusD09.json" rel="nofollow noopener">cwwp2.dot.ca.gov</a></li>
+      <li><span>City of Austin</span><a href="https://data.austintexas.gov/download/d9mm-cjw9" rel="nofollow noopener">data.austintexas.gov</a></li>
+      <li><span>Colorado DOT (COtrip)</span><a href="https://api-511x-co.carsprogram.org/events/map-features" rel="nofollow noopener">api-511x-co.carsprogram.org</a></li>
+      <li><span>Connecticut (CTroads)</span><a href="https://ctroads.org" rel="nofollow noopener">ctroads.org</a></li>
+      <li><span>Delaware DOT</span><a href="https://wzdx.e-dot.com/del_dot_feed_wzdx_v4.1.geojson" rel="nofollow noopener">wzdx.e-dot.com</a></li>
+      <li><span>Florida DOT</span><a href="https://us-datacloud.one.network/fdot/feed.json" rel="nofollow noopener">us-datacloud.one.network</a></li>
+      <li><span>Georgia DOT (511GA), GA</span><a href="https://services1.arcgis.com/2iUE8l8JKrP2tygQ/arcgis/rest/services/GDOT_511_Events_Public_View/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Hawaii DOT</span><a href="https://ai.blyncsy.io/wzdx/hidot/feed" rel="nofollow noopener">ai.blyncsy.io</a></li>
+      <li><span>Hawaii DOT (lane closures), HI</span><a href="https://services.arcgis.com/HQ0xoN0EzDPBOEci/arcgis/rest/services/Lane_Closure_WebMap_WFL1_view/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Idaho DOT</span><a href="https://511.idaho.gov/api/wzdx" rel="nofollow noopener">511.idaho.gov</a></li>
+      <li><span>Illinois DOT (construction), IL</span><a href="https://services2.arcgis.com/aIrBD8yn1TDTEXoz/arcgis/rest/services/Road_Construction_Public/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Illinois DOT (road closures), IL</span><a href="https://services2.arcgis.com/aIrBD8yn1TDTEXoz/arcgis/rest/services/ClosureIncidents/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Indiana DOT</span><a href="https://in.carsprogram.org/carsapi_v1/api/wzdx" rel="nofollow noopener">in.carsprogram.org</a></li>
+      <li><span>Iowa DOT</span><a href="https://iowa-atms.cloud-q-free.com/api/rest/dataprism/wzdx/wzdxfeed" rel="nofollow noopener">iowa-atms.cloud-q-free.com</a></li>
+      <li><span>Iowa DOT, IA</span><a href="https://services.arcgis.com/8lRhdTsQyJpO52F1/arcgis/rest/services/RoadClosures_public_2b1be8a7c229405d920da7d335a1a01c/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Kansas DOT</span><a href="https://ks.carsprogram.org/carsapi_v1/api/wzdx" rel="nofollow noopener">ks.carsprogram.org</a></li>
+      <li><span>Kentucky Transportation Cabinet</span><a href="https://storage.googleapis.com/kytc-its-2020-openrecords/public/feeds/WZDx/kytc_wzdx_v4.1.geojson" rel="nofollow noopener">storage.googleapis.com</a></li>
+      <li><span>Louisiana DOTD</span><a href="https://wzdx.e-dot.com/la_dot_d_feed_wzdx_v4.1.geojson" rel="nofollow noopener">wzdx.e-dot.com</a></li>
+      <li><span>Maricopa County (AZTech)</span><a href="https://wzdxapi.aztech.org/construction" rel="nofollow noopener">wzdxapi.aztech.org</a></li>
+      <li><span>Maryland DOT</span><a href="https://filter.ritis.org/wzdx_v4.1/mdot.geojson" rel="nofollow noopener">filter.ritis.org</a></li>
+      <li><span>Massachusetts &amp; Rhode Island (Mass511)</span><a href="https://mass511.com" rel="nofollow noopener">mass511.com</a></li>
+      <li><span>Michigan DOT (MiDrive)</span><a href="https://mdotjboss.state.mi.us/MiDrive/construction/AllForMap" rel="nofollow noopener">mdotjboss.state.mi.us</a></li>
+      <li><span>Michigan DOT, MI</span><a href="https://services2.arcgis.com/67lKNkQ2TO1I3lhR/arcgis/rest/services/RoadClosures_public_3d3fcb4db4334aa88f746901f4e34f72/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Minnesota DOT</span><a href="https://mn.carsprogram.org/carsapi_v1/api/wzdx" rel="nofollow noopener">mn.carsprogram.org</a></li>
+      <li><span>Mississippi DOT</span><a href="https://api.mdottraffic.com/prod/v3/data/wzdx" rel="nofollow noopener">api.mdottraffic.com</a></li>
+      <li><span>Missouri DOT</span><a href="https://traveler.modot.org/timconfig/feed/desktop/mo_wzdx.json" rel="nofollow noopener">traveler.modot.org</a></li>
+      <li><span>Montana DOT (511MT), MT</span><a href="https://mt.cdn.iteris-atis.com/geojson/icons/metadata/icons.construction.geojson" rel="nofollow noopener">mt.cdn.iteris-atis.com</a></li>
+      <li><span>Nebraska (511 Nebraska)</span><a href="https://511.nebraska.gov" rel="nofollow noopener">511.nebraska.gov</a></li>
+      <li><span>Nevada DOT</span><a href="https://www.nvroads.com/api/wzdx" rel="nofollow noopener">nvroads.com</a></li>
+      <li><span>New England Compass (NH, VT, ME)</span><a href="https://api.dx.ne-compass.com/wzdx-latest/" rel="nofollow noopener">api.dx.ne-compass.com</a></li>
+      <li><span>New Jersey DOT</span><a href="https://smartworkzones.njit.edu/nj/wzdx" rel="nofollow noopener">smartworkzones.njit.edu</a></li>
+      <li><span>New Mexico DOT</span><a href="https://ai.blyncsy.io/wzdx/nmdot/feed" rel="nofollow noopener">ai.blyncsy.io</a></li>
+      <li><span>New York DOT</span><a href="https://511ny.org/api/wzdx" rel="nofollow noopener">511ny.org</a></li>
+      <li><span>North Carolina DOT</span><a href="https://drivenc.gov/api/wzdx" rel="nofollow noopener">drivenc.gov</a></li>
+      <li><span>North Dakota DOT</span><a href="https://travelfiles.dot.nd.gov/geojson_nc/wzdx_geojson.json" rel="nofollow noopener">travelfiles.dot.nd.gov</a></li>
+      <li><span>NTTA toll roads</span><a href="https://traffic.ntta.org/Main/GetLaneClosureListByDistrict" rel="nofollow noopener">traffic.ntta.org</a></li>
+      <li><span>Ohio DOT (OHGO)</span><a href="https://publicapi.ohgo.com/api/work-zones/wzdx/4.2" rel="nofollow noopener">publicapi.ohgo.com</a></li>
+      <li><span>Oklahoma DOT</span><a href="https://oktraffic.org/api/Geojsons/workzones" rel="nofollow noopener">oktraffic.org</a></li>
+      <li><span>Oregon DOT (TripCheck)</span><a href="https://www.tripcheck.com/Scripts/map/data/EVENT.js" rel="nofollow noopener">tripcheck.com</a></li>
+      <li><span>Pennsylvania (511PA)</span><a href="https://www.511pa.com" rel="nofollow noopener">511pa.com</a></li>
+      <li><span>South Carolina DOT (511SC), SC</span><a href="https://sc.cdn.iteris-atis.com/geojson/icons/metadata/icons.construction.geojson" rel="nofollow noopener">sc.cdn.iteris-atis.com</a></li>
+      <li><span>South Dakota DOT (SD511), SD</span><a href="https://sd.cdn.iteris-atis.com/geojson/icons/metadata/icons.road-work.geojson" rel="nofollow noopener">sd.cdn.iteris-atis.com</a></li>
+      <li><span>St. Charles County</span><a href="https://scc.ridsi-dash.com:5000/wzdx.geojson" rel="nofollow noopener">scc.ridsi-dash.com:5000</a></li>
+      <li><span>Tennessee DOT (SmartWay), TN</span><a href="https://spatial.tdot.tn.gov/ArcGIS/rest/services/Smartway/Smartway_Events/MapServer" rel="nofollow noopener">spatial.tdot.tn.gov</a></li>
+      <li><span>Texas DOT (DriveTexas)</span><a href="https://drivetexas.org" rel="nofollow noopener">drivetexas.org</a></li>
+      <li><span>Utah DOT</span><a href="https://udottraffic.utah.gov/wzdx/udot/v40/data" rel="nofollow noopener">udottraffic.utah.gov</a></li>
+      <li><span>Virginia DOT (511 Virginia), VA</span><a href="https://data.511-atis-ttrip-prod.iteriscloud.com/datasets/eventUnfiltered/active_construction.geojson" rel="nofollow noopener">data.511-atis-ttrip-prod.iteriscloud.com</a></li>
+      <li><span>Washington State DOT</span><a href="https://wzdx.wsdot.wa.gov/api/v4/WorkZoneFeed" rel="nofollow noopener">wzdx.wsdot.wa.gov</a></li>
+      <li><span>West Virginia DOT (WV511)</span><a href="https://wv511.org/wsvc/gmap.asmx/buildEventsKMLc" rel="nofollow noopener">wv511.org</a></li>
+      <li><span>Wisconsin DOT</span><a href="https://511wi.gov/api/wzdx" rel="nofollow noopener">511wi.gov</a></li>
+      <li><span>Wyoming DOT, WY</span><a href="https://services2.arcgis.com/WI04Bd6haCzitbuQ/arcgis/rest/services/RoadClosures_public_87a246ae57c449209a0a5212dd214b3e/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Cities, counties and regional agencies (416)</h2>
+    <ul class="sources">
+      <li><span>Ada County Highway District (Boise area), ID</span><a href="https://gis.achdidaho.org/server/rest/services/RITA/RITA_Public/FeatureServer" rel="nofollow noopener">gis.achdidaho.org</a></li>
+      <li><span>Alameda County, CA</span><a href="https://services5.arcgis.com/ROBnTHSNjoZ2Wm1P/arcgis/rest/services/Road_Closures_public/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Albany County, NY</span><a href="https://services6.arcgis.com/mBzcjj7yrA6fBe9F/arcgis/rest/services/AC_Project_Road_Closures_and_Detours/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Albuquerque</span><a href="https://dmdmaps.cabq.gov/serverext/rest/services/Public/Barricade_Lines_Fast/MapServer" rel="nofollow noopener">dmdmaps.cabq.gov</a></li>
+      <li><span>Allegheny County, PA</span><a href="https://services1.arcgis.com/vdNDkVykv9vEWFX4/ArcGIS/rest/services/Projects_and_Closures/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Amarillo, TX</span><a href="https://services6.arcgis.com/Vdk8uHgdgYx8ZqS6/arcgis/rest/services/FY2324StreetMaintenanceView/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Ames, IA</span><a href="https://services.arcgis.com/GM5KudYVoaALNBe2/arcgis/rest/services/RoadClosures_public_ac1da0279ebb44f981de00b58142e043/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Anaheim, CA</span><a href="https://gis.anaheim.net/map/rest/services/ProjectTracker_ViewFinder/MapServer" rel="nofollow noopener">gis.anaheim.net</a></li>
+      <li><span>Municipality of Anchorage, AK</span><a href="https://services2.arcgis.com/Ce3DhLRthdwbHlfF/arcgis/rest/services/RoadClosures_public_2798310ba88a41f8802d54b19685b6f6/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Town of Andover, MA</span><a href="https://services2.arcgis.com/lwCBy4rf304Mr16J/arcgis/rest/services/RoadClosures_public_0299020783ee4e20bfbe2a5f0d9189ce/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Ann Arbor, MI</span><a href="https://services2.arcgis.com/cenCPuKxOZuq6BCE/arcgis/rest/services/Downtown_Street_Closures_2026/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Apple Valley, MN</span><a href="https://services6.arcgis.com/kIEwMUNW6ZLWUVjA/arcgis/rest/services/RoadClosures_public_c5ba26b5ba374fa9852a86f30478d3ca/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Arcadia, CA</span><a href="https://services.arcgis.com/xsicuXZ553tglig9/arcgis/rest/services/RoadClosures_active_public_07074e59b3644d8b96c26e123a46e4a4/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Arcata, CA</span><a href="https://services7.arcgis.com/jU4YVDLdY8n9WFKw/arcgis/rest/services/RoadClosures_public_9832f72796a7460caf8dcec62ea8cce5/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Arlington</span><a href="https://gis2.arlingtontx.gov/agsext2/rest/services/OpenData/OD_Transportation/MapServer" rel="nofollow noopener">gis2.arlingtontx.gov</a></li>
+      <li><span>City of Arvada, CO</span><a href="https://services1.arcgis.com/eQyVgDz2cjhzbzN7/arcgis/rest/services/RoadClosures_public_fdeacd0fcefe40829772c12eb8c55b7c/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Asheville, NC</span><a href="https://services.arcgis.com/aJ16ENn1AaqdFlqx/arcgis/rest/services/RoadClosures_public_9fd2608d7a6a4236b6cb263485133ee7/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Ashland, OH</span><a href="https://services8.arcgis.com/5NCvmz1mrqKufinC/arcgis/rest/services/RoadClosures_public_8ae3a98c30f145af8fe096aee5475ec1/FeatureServer" rel="nofollow noopener">services8.arcgis.com</a></li>
+      <li><span>City of Aspen, CO</span><a href="https://services3.arcgis.com/5FkYBrhNzpVtlA6F/arcgis/rest/services/RoadClosures_public_dec8518c235e4fa1b0b722a37e7ae913/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Atlanta</span><a href="https://services2.arcgis.com/zLeajbicrDRLQcny/arcgis/rest/services/Road_Detours_and_Closures/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Atlanta, GA (traffic control permits)</span><a href="https://dpwgis.atlantaga.gov/hostingserver/rest/services/Traffic_Control_Permit_Present_and_Future_new/FeatureServer" rel="nofollow noopener">dpwgis.atlantaga.gov</a></li>
+      <li><span>City of Auburn, AL</span><a href="https://ocean.auburnalabama.org/arcgis/rest/services/Hosted/RoadClosuresPublic/FeatureServer" rel="nofollow noopener">ocean.auburnalabama.org</a></li>
+      <li><span>City of Aurora, CO</span><a href="https://services3.arcgis.com/0Va1ID99NSrNyyPX/arcgis/rest/services/Planned_High_Impact_Work_Zones_Public_View/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Austin, TX (special events)</span><a href="https://services.arcgis.com/0L95CJ0VTaxqcmED/arcgis/rest/services/Special_Events_Road_Closures_Public/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Bakersfield, CA</span><a href="https://gis.bakersfieldcity.us/webmaps/rest/services/General/PublicWorksPermits/MapServer" rel="nofollow noopener">gis.bakersfieldcity.us</a></li>
+      <li><span>City of Baltimore, MD (resurfacing)</span><a href="https://services3.arcgis.com/ZTvQ9NuONePFYofE/arcgis/rest/services/DOT_Resurfacing_Project_2026/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Village of Bartlett, IL</span><a href="https://services6.arcgis.com/COXcDw4MjTwPS9Lu/arcgis/rest/services/RoadClosures_public_b26491d79e1543b7a06761d2f709e82e/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Bastrop Police, TX</span><a href="https://services7.arcgis.com/qOeXJdBtGknaCJC4/arcgis/rest/services/RoadClosures_public_279db35b5c3846769ab7170fd2a27f46/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Baton Rouge, LA</span><a href="https://data.brla.gov/resource/ra2i-eye8.json" rel="nofollow noopener">data.brla.gov</a></li>
+      <li><span>City of Battle Creek, MI</span><a href="https://services6.arcgis.com/cuKwt0IKP5B84jop/arcgis/rest/services/RoadClosures_public_4eff1934852f4407a2597e97c7e9dd24/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Bay City, MI</span><a href="https://services6.arcgis.com/qEGIvpJUxjqfBKaP/arcgis/rest/services/RoadClosures_public_9ded21dd4cf6475f93b717f5f4f28861/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Town of Bellingham, MA</span><a href="https://services9.arcgis.com/rGw2TnVcJ6PgP03U/arcgis/rest/services/RoadClosures_2_view/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of Bend, OR</span><a href="https://services5.arcgis.com/JisFYcK2mIVg9ueP/arcgis/rest/services/RoadClosure/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Bentonville, AR</span><a href="https://services1.arcgis.com/KVEBkgY6kMufuFG2/arcgis/rest/services/RoadClosures_public_75e6a6095e9d451ca8adbb811ac48613/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Bexar County, TX</span><a href="https://services1.arcgis.com/8onVmslF2KXErTHT/arcgis/rest/services/RoadClosures_public_6e9c270e277b45a7942a8f6c57641305/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Billings, MT</span><a href="https://services6.arcgis.com/rCC3yWJa2mjYtKDP/arcgis/rest/services/RoadClosures_6641ad74b3ca42bb95dc6c918b1efab2_public/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Bismarck, ND</span><a href="https://services1.arcgis.com/XxHmL09eFqJWI0gE/arcgis/rest/services/Bismarck_Public_Road_Closures/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Bloomington, IN</span><a href="https://services9.arcgis.com/47GwVXZ9a8thrviM/arcgis/rest/services/inRoads_Closures/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of Boston, MA (street permits)</span><a href="https://services.arcgis.com/sFnw0xNflSi8J0uh/arcgis/rest/services/Analytics_Street_Access_Awareness_Active_Permits/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Boston, MA (upcoming street permits)</span><a href="https://services.arcgis.com/sFnw0xNflSi8J0uh/arcgis/rest/services/Analytics_Street_Access_Awareness_Future_Permits/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Box Elder, SD</span><a href="https://gisweb.boxeldersd.gov/server/rest/services/Hosted/RoadClosures_public_d6c3ab461311454bbf1aa9859edc7e8a/FeatureServer" rel="nofollow noopener">gisweb.boxeldersd.gov</a></li>
+      <li><span>Brevard County, FL</span><a href="https://services2.arcgis.com/zfDSLldsAGQfwUz9/arcgis/rest/services/RoadClosures_public_885df222351c478bb4722d2cefd48373/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Brighton, CO</span><a href="https://services6.arcgis.com/FoIoSLUvgp6HznSK/arcgis/rest/services/RoadClosures_public_2e57910d4a1b4834ad5502e6ee02b9cd/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Brookings, SD</span><a href="https://services5.arcgis.com/ghMlwLxET54qDmAf/arcgis/rest/services/RoadClosures_public_27977e12d77e488297ab156476ed886d/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Burlington, VT</span><a href="https://services1.arcgis.com/1bO0c7PxQdsGidPK/arcgis/rest/services/Construction_and_Planning_Datasets_Public_View_v2/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Butler County, IA</span><a href="https://services9.arcgis.com/jIUaDZdgfolKpFKx/arcgis/rest/services/RoadClosures_public_2552ffa94b6c45abbdc40c1ccdfa31f1/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>Butler County, KS</span><a href="https://ww1.bucoks.com/bucogis1/rest/services/Hosted/Road_Closures_Public_View/FeatureServer" rel="nofollow noopener">ww1.bucoks.com</a></li>
+      <li><span>City of Cambridge, MA (street cuts)</span><a href="https://data.cambridgema.gov/resource/nuxx-d95m.json" rel="nofollow noopener">data.cambridgema.gov</a></li>
+      <li><span>City of Cambridge, MA (street obstructions)</span><a href="https://data.cambridgema.gov/resource/vydm-qk5p.json" rel="nofollow noopener">data.cambridgema.gov</a></li>
+      <li><span>Canal Winchester area, OH</span><a href="https://services2.arcgis.com/L7YSCDUQyC7Biss6/arcgis/rest/services/RoadClosures_public_baea24b3c4954f8eb44e8b2272fb3fde/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Carmel, IN</span><a href="https://services5.arcgis.com/nKFfYbLYNDrYHgoO/arcgis/rest/services/RoadClosures_public_465350d4e6aa493ab2f47fa0f2882ccc/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Carson City, NV</span><a href="https://services5.arcgis.com/C0ejqMIMxJZHALms/arcgis/rest/services/RoadClosures_Public2/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Town of Cary, NC</span><a href="https://services2.arcgis.com/l4TwMwwoiuEVRPw9/arcgis/rest/services/vw_WAZE_Road_Closure_Feed/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Celina, TX</span><a href="https://services1.arcgis.com/x4nhme9V33KOzAfr/arcgis/rest/services/RoadClosures_public_5595a0e7bc9d445ea0890ecccb92044e/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Chamblee, GA</span><a href="https://services7.arcgis.com/Wa5u3F8BOztWahRv/arcgis/rest/services/RoadClosures_public_ded7e2bc0be7488cb2729f9279c2e075/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Chandler, AZ</span><a href="https://gis.chandleraz.gov/appsanonymous/rest/services/TE/TrafficRestrictionsAll/MapServer" rel="nofollow noopener">gis.chandleraz.gov</a></li>
+      <li><span>Charles County, MD</span><a href="https://services7.arcgis.com/3BMWkdyrt45RNCrq/arcgis/rest/services/RoadClosures_public_6d536e085c9d4953b2f1a571dec50bab/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Charleston, SC</span><a href="https://gis.charleston-sc.gov/arcgis2/rest/services/External/RoadClosuresViewer/MapServer" rel="nofollow noopener">gis.charleston-sc.gov</a></li>
+      <li><span>City of Charlotte</span><a href="https://gis.charlottenc.gov/arcgis/rest/services/CDOT/StreetClosuresAndDetours/MapServer" rel="nofollow noopener">gis.charlottenc.gov</a></li>
+      <li><span>City of Chattanooga, TN</span><a href="https://services2.arcgis.com/OIAIimblRxPs0xxc/arcgis/rest/services/RoadClosures_public_ec7344db0bf0465695fafc6bdcd1b06f/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Chesapeake, VA</span><a href="https://services1.arcgis.com/OAphVRUvJVpBRovs/arcgis/rest/services/RoadClosures_dashboard_0e0fd424c48942d591b4d1593c68d05b/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Chicago</span><a href="https://data.cityofchicago.org/resource/pubx-yq2d.json" rel="nofollow noopener">data.cityofchicago.org</a></li>
+      <li><span>City of Chicopee, MA</span><a href="https://services6.arcgis.com/YOvBy1qjcG3M90vp/arcgis/rest/services/RoadClosures_public_2bfc148a642d4e7ca7c3095229549153/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Town of Chino Valley, AZ</span><a href="https://services9.arcgis.com/i3qUnF4Y18Qp5Dp2/arcgis/rest/services/Town_of_Chino_Valley_Road_Closures/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of Cincinnati, OH (right-of-way permits)</span><a href="https://cagisonline.hamilton-co.org/arcgis/rest/services/Construction_Coordination/CWCC_Projects/FeatureServer" rel="nofollow noopener">cagisonline.hamilton-co.org</a></li>
+      <li><span>Clark County, WA</span><a href="https://gis.clark.wa.gov/arcgisfed/rest/services/Hosted/RoadClosures_public_0f5e6cf1378b4b1b97cf533967f0b7bd/FeatureServer" rel="nofollow noopener">gis.clark.wa.gov</a></li>
+      <li><span>Clay County, MN</span><a href="https://services6.arcgis.com/mS1vc6dGT4od9xCB/arcgis/rest/services/RoadClosures_public_fa0c81864d9d4c58beec1e183842d16e/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Clay County, MO</span><a href="https://services7.arcgis.com/3c8lLdmDNevrTlaV/arcgis/rest/services/RoadClosures_public_c55060e1b67c414096fba5328c248fa9/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>Clayton County, GA</span><a href="https://services5.arcgis.com/m528W8U8YDYeMPrQ/arcgis/rest/services/RoadClosures_ae9fcdfa0ec140138c763921e29fae16/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Clinton County Road Commission, MI</span><a href="https://services6.arcgis.com/q6lMdWJIVYG0PkJx/arcgis/rest/services/RoadClosures_public_b4dab4ae28ce40ef9f809087f712df5d/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Cobb County, GA</span><a href="https://services.arcgis.com/HYLRafMc4Ux6DA8c/arcgis/rest/services/RoadClosurePt_view/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Colorado Springs</span><a href="https://services1.arcgis.com/V0JDguEsaeBdf94U/arcgis/rest/services/Waze_Cone_Zones/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Columbia County, GA</span><a href="https://services3.arcgis.com/XqCfDEcWKHtcTHsa/arcgis/rest/services/Road_Closures_2026/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Concord, NC</span><a href="https://services2.arcgis.com/0esqB0FgvL32hAbY/arcgis/rest/services/RoadClosures_public_dbe4b4541a454524a5dfa529ac489b22/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Cook County DOTH, IL</span><a href="https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/DOTH_Construction_Projects_2026/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Corpus Christi, TX</span><a href="https://www.corpuschristitx.gov/department-directory/public-works/" rel="nofollow noopener">corpuschristitx.gov</a></li>
+      <li><span>City of Crest Hill, IL</span><a href="https://services.arcgis.com/1nQbHWEaW8t5LMjE/arcgis/rest/services/Construction_Project_Tracking/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Dallas</span><a href="https://services2.arcgis.com/rwnOSbfKSwyTBcwN/arcgis/rest/services/Traffic_Control_Permits/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Dane County, WI</span><a href="https://services6.arcgis.com/Tu5JcmtrRRLVaRlf/arcgis/rest/services/Highway_Data_view/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Death Valley National Park, CA</span><a href="https://services1.arcgis.com/fBc8EJBxQRMcHlei/arcgis/rest/services/DEVA_Transit_Road_Closure_Inyo_County_View_2024/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Delaware County, IN</span><a href="https://services.arcgis.com/VyRjdyMziYNF5Bwe/arcgis/rest/services/RoadClosures_public_2a602deb39a04b8799a1c250d55b2ecf/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Denton</span><a href="https://maps.cityofdenton.com/server/rest/services/PMO/CIPEdit/MapServer" rel="nofollow noopener">maps.cityofdenton.com</a></li>
+      <li><span>Denton County, TX</span><a href="https://services.arcgis.com/oTsZYNubyv7xK5yP/arcgis/rest/services/RoadClosures_public_7c7b09034a0a4392b06eed8988445460/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Denver</span><a href="https://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/ODC_DEV_STREETOCCUPANCYPPERMITS_L/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Detroit Lakes, MN</span><a href="https://services5.arcgis.com/AnxcfTrkVaDzEZaP/arcgis/rest/services/RoadClosures_public_eaf31c4972b848998f8b7720292a5ed3/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Detroit, MI</span><a href="https://services2.arcgis.com/qvkbeam7Wirps6zC/arcgis/rest/services/detroit_right_of_way_permits/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Dorchester County, SC</span><a href="https://services.arcgis.com/ehmkfEMN55hUsomR/arcgis/rest/services/RoadClosures_public_db19b177647e46b194bd99d9dd14a75d/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Douglas County Engineering, NE</span><a href="https://services.arcgis.com/pDAi2YK0L0QxVJHj/arcgis/rest/services/RoadClosures_public_72f0f81c556f4ad2a0b4ae9ff09c996d/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Douglas, WY</span><a href="https://services7.arcgis.com/jSSJTwQp4nF4r65G/arcgis/rest/services/RoadClosures_public_597d0cc63f1f415d8ceab620d42ee265/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Dublin, CA</span><a href="https://services3.arcgis.com/YduA3dd0porqlP5K/arcgis/rest/services/RoadClosures_public_2f1c785095884ff5b6776f8870a8cef8/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Dubuque, IA</span><a href="https://services.arcgis.com/527lum9o4TRWxIoH/arcgis/rest/services/RoadClosures_0ac3279905ad48a5b6cc4c9d32475363/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Duluth, MN</span><a href="https://utility.arcgis.com/usrsvcs/servers/e43601c9917a405f96d571f70ce67e33/rest/services/RoadClosures/OneWeekofClosuresMS/MapServer" rel="nofollow noopener">utility.arcgis.com</a></li>
+      <li><span>City of Durango, CO</span><a href="https://services.arcgis.com/iqrNQm6g4Pj36MWn/arcgis/rest/services/RoadClosures_public_ef9ca9db0e1946c58a6d7195e1df9dfa/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Durham, NC</span><a href="https://services2.arcgis.com/G5vR3cOjh6g2Ed8E/arcgis/rest/services/RoadClosures_public_8daf1f43b579457daddd735138cd3ff4/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Town of Easton, MA</span><a href="https://services2.arcgis.com/G6TP4SnXQoFs2r0T/arcgis/rest/services/RoadClosures_EastonMA/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Elizabethtown, KY</span><a href="https://services.arcgis.com/jQAeHpE1f8SVxxNo/arcgis/rest/services/RoadClosures_public_caccf1b22ee54350bb56b5384bb9e9d6/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Elkhart, IN</span><a href="https://services5.arcgis.com/RhRpaq8RpEQjlpir/arcgis/rest/services/Road_Closure_view/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Elmhurst, IL</span><a href="https://services2.arcgis.com/UX351pjq7PcVPMoy/arcgis/rest/services/RoadClosures_public_5403e91b003b44f9b9e30a889cc70a65/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Eloy, AZ</span><a href="https://services7.arcgis.com/VfOwt1fngp5cVBlk/arcgis/rest/services/RoadClosures_public_70b827edb96843b39934483de6079192/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>Emmet County, IA</span><a href="https://services3.arcgis.com/ePqnKQKvv2QHas0c/arcgis/rest/services/RoadClosures_public_717567e86e414b93b9afe0819aa5c8ce/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Emporia, KS</span><a href="https://services3.arcgis.com/3SWzJZcXSOYHE5Bl/arcgis/rest/services/RoadClosures_public_fbdfb288de324ad2abb93edceeb28d08/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Enid, OK</span><a href="https://services6.arcgis.com/LIvKKeLD11lMmJuJ/arcgis/rest/services/COE_Road_Closures/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Erie County, OH</span><a href="https://services3.arcgis.com/r00vmm8eIzAwdHlO/arcgis/rest/services/RoadClosures_public_be2f07c7b6ce4aada7e3fa8b040770ad/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Town of Erie, CO</span><a href="https://services.arcgis.com/NbWyb6ln36kTlkzz/arcgis/rest/services/RoadClosures_public_619fbbb54a8049eaab8a520d251947a1/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Evansville Water and Sewer Utility, IN</span><a href="https://services7.arcgis.com/CpU55e5tQz42Nf6c/arcgis/rest/services/RoadClosures_public_64ba12452a604aa38b675121abb771e0/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Evansville, IN</span><a href="https://services1.arcgis.com/iZyBOluseC8ffQc2/arcgis/rest/services/RoadClosures_public_134f5a65ca7a4496b8e98989ecfe7fb3/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Everett, WA</span><a href="https://data.everettwa.gov/resource/3w3u-656c.json" rel="nofollow noopener">data.everettwa.gov</a></li>
+      <li><span>City of Fargo, ND</span><a href="https://services.arcgis.com/dKCUKytYmSPPFPqX/arcgis/rest/services/RoadClosures_public_240ce519f2f44db59f088ca3ce7db255/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Fayetteville, NC</span><a href="https://services.arcgis.com/j3zNT485kmwrBtMJ/arcgis/rest/services/RoadClosures_public_697e9a320195450db1782594f4abef54/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Fitchburg, WI</span><a href="https://services1.arcgis.com/1VeK15F7oaitDair/arcgis/rest/services/RoadClosures_public_a333201965b74e67a2fd4b9fdf1e85df/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Florida Division of Emergency Management, FL</span><a href="https://services.arcgis.com/3wFbqsFPLeKqOlIK/arcgis/rest/services/RoadClosures_public_44fa58f6fda24081bce0176721df8ba3/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Fort Collins, CO</span><a href="https://services1.arcgis.com/dLpFH5mwVvxSN4OE/arcgis/rest/services/RoadClosures_public_2add6e5537474da381dfa8ae622a1eab/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Fort Lauderdale, FL</span><a href="https://gis.fortlauderdale.gov/server/rest/services/motLine/FeatureServer" rel="nofollow noopener">gis.fortlauderdale.gov</a></li>
+      <li><span>City of Fort Myers, FL</span><a href="https://services1.arcgis.com/T37xMyv8DRNzouiI/arcgis/rest/services/RoadClosures_public_8486b3f9fa3a4b79acc8a0b4c316b0fa/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Fort Walton Beach, FL</span><a href="https://services2.arcgis.com/DsE4m2IKL5jJE7JP/arcgis/rest/services/RoadClosures_public_925b561a9cbd440e970db03581fa0ac3/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Fort Wayne, IN</span><a href="https://gis.acimap.us/CFWServices/rest/services/CFW_PW_TREC/RoadClosuresTREC_Public/FeatureServer" rel="nofollow noopener">gis.acimap.us</a></li>
+      <li><span>City of Fort Worth</span><a href="https://www.fortworthtexas.gov/projects/closures" rel="nofollow noopener">fortworthtexas.gov</a></li>
+      <li><span>Franklin County Engineer, OH</span><a href="https://services1.arcgis.com/7r2Wl09a1Apy459r/arcgis/rest/services/FCEO_Project_Locations/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Franklin County, KS</span><a href="https://services1.arcgis.com/Cdr6tOjJ99MjOR6x/arcgis/rest/services/RoadClosures_public_4559e3bd07a342e7b79f7e3ace8a9498/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Franklin County, VA</span><a href="https://services9.arcgis.com/AzdpqVmJ5GjGWCoI/arcgis/rest/services/Local_Road_Closures_and_Detours_View/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of Franklin, TN</span><a href="https://services1.arcgis.com/du2kAhlOU8gWyWb5/arcgis/rest/services/RoadClosures_2_view/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Franklin, WI</span><a href="https://services2.arcgis.com/iVgAL45PIFPKIKKT/arcgis/rest/services/RoadClosures_events_7b83a0ff156745ea92f3d704ed78cbc6/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Fresno</span><a href="https://services2.arcgis.com/WkBUojyNPhsWOk1W/arcgis/rest/services/Road_Closure_Location_GIS_Hub/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Fresno County, CA</span><a href="https://gisprod10.co.fresno.ca.us/server/rest/services/Hosted/Fresno_County_Road_Closures_Public/FeatureServer" rel="nofollow noopener">gisprod10.co.fresno.ca.us</a></li>
+      <li><span>City of Frisco</span><a href="https://maps.friscotexas.gov/gis/rest/services/Public/Barriers/MapServer" rel="nofollow noopener">maps.friscotexas.gov</a></li>
+      <li><span>City of Gaffney, SC</span><a href="https://services3.arcgis.com/5WiV1cFjOcoTFxQs/arcgis/rest/services/RoadClosures_public_a6adb480910b40979f0db7e8554ae437/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Georgetown and Scott County, KY</span><a href="https://services1.arcgis.com/dpmGqj7FxlwlvK0y/arcgis/rest/services/RoadClosures_public_8a112977b63344b68c2d17c20c099465/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Georgetown, TX (lane closures)</span><a href="https://services1.arcgis.com/hS6YFkR2k1nKTxpm/arcgis/rest/services/survey123_35cf78a944cb4a9ba9b45cac0a97db06_results/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Georgetown, TX (right-of-way permits)</span><a href="https://gis.georgetowntexas.gov/arcgis/rest/services/SystemsEngineering/ROWPermitting_FeatureService/FeatureServer" rel="nofollow noopener">gis.georgetowntexas.gov</a></li>
+      <li><span>City of Germantown, TN</span><a href="https://services5.arcgis.com/LnfZzt7NtPrHmp5p/arcgis/rest/services/RoadClosures_public_cb4ed999d185466381da6fe23f875947/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Glendale, CA</span><a href="https://services2.arcgis.com/9koNgJGJVNJ5IWdw/arcgis/rest/services/RoadClosures_public_5ce09347cd4141d3a6cb97ecee4eb5e7/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Glenn County, CA</span><a href="https://services3.arcgis.com/GUHJKBhKMcD5JjTe/arcgis/rest/services/RoadClosures_public_2580f9af072d455bae6f50f60d26d3c1/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Golden, CO</span><a href="https://services1.arcgis.com/FP2GwMAr4SrmXGhq/arcgis/rest/services/Road_Closures_Public/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Goshen, IN</span><a href="https://services8.arcgis.com/trHxDV6stlqDdGWV/arcgis/rest/services/RoadClosures_public_3fe9cc53324b46a190b196c6a33b317d/FeatureServer" rel="nofollow noopener">services8.arcgis.com</a></li>
+      <li><span>City of Grand Island, NE</span><a href="https://services3.arcgis.com/H1fomogcAqX4720J/arcgis/rest/services/PW_RoadClosures_GIview/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Grand Rapids, MI</span><a href="https://maps.grcity.us/arcgis/rest/services/ArcGIS_Online/Engineering_Data_Inventory_New/FeatureServer" rel="nofollow noopener">maps.grcity.us</a></li>
+      <li><span>City of Grapevine</span><a href="https://services.arcgis.com/xSPs49inzz3yMpnd/arcgis/rest/services/RoadClosures_public_9a91d460968342328f9b812988d9849d/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Green Bay, WI</span><a href="https://map.greenbaywi.gov/server/rest/services/DPW/Construction_Project_Status/MapServer" rel="nofollow noopener">map.greenbaywi.gov</a></li>
+      <li><span>City of Greenville, TX</span><a href="https://services3.arcgis.com/PbnvqazCuoNZ4rzO/arcgis/rest/services/RoadClosures_public_4af4dff7a4054b55bacfee062f356161/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Greenwood, IN</span><a href="https://services2.arcgis.com/6DdnNWEqLRF18ltQ/arcgis/rest/services/RoadClosures_public_56abfd6d8d8344219260d36d8565f2f4/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Guadalupe County, TX</span><a href="https://services.arcgis.com/nm045BuyQhRAuLir/arcgis/rest/services/RoadClosures_public_e6389c3dd47e46b4b0f471bcd90ab634/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Guilford County, NC</span><a href="https://gcgis.guilfordcountync.gov/arcgis/rest/services/Hosted/RoadClosures_public_8bffe5f510744bdcaa000a5f6f6e41ac/FeatureServer" rel="nofollow noopener">gcgis.guilfordcountync.gov</a></li>
+      <li><span>City of Hagerstown, MD</span><a href="https://services1.arcgis.com/9aTeWThUK7pWn6CQ/arcgis/rest/services/RoadClosures_public_bf046a25214c41a091cd66bce2271307/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Hamilton County Engineer, OH</span><a href="https://services.arcgis.com/JyZag7oO4NteHGiq/arcgis/rest/services/RoadClosures_public_4ae4f7e8edef46d781c5b5b749d6f684/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Harrisburg, PA</span><a href="https://services5.arcgis.com/9n3LUAMi3B692MBL/arcgis/rest/services/RoadClosures_f0c23ca29f394e03a9ea06a2ffcb317a/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Harvey County, KS</span><a href="https://services2.arcgis.com/NYSVwQ7Ci1T1U8La/arcgis/rest/services/RoadClosures_2_view/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Hays County, TX</span><a href="https://services5.arcgis.com/bVphnK8rPe5MHUSr/arcgis/rest/services/RoadClosures_public_70230bed27084a58bcf6ebad428b8a2a/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Heber City, UT</span><a href="https://services8.arcgis.com/OaQlLqKJW3ki0q5w/arcgis/rest/services/RoadClosures_public_20bc391d363044a08dc851315fe00547/FeatureServer" rel="nofollow noopener">services8.arcgis.com</a></li>
+      <li><span>Town of Hempstead, NY</span><a href="https://services6.arcgis.com/bqUwpAFaDo5lm9eK/arcgis/rest/services/ToHProjectPolygons_VIEW2/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Henrico County, VA</span><a href="https://services.arcgis.com/LxWK4CxNTBBlLshT/arcgis/rest/services/Henrico_County_Road_Closures/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Hertford County, NC</span><a href="https://services.arcgis.com/MOvVToSDbOGFaHPk/arcgis/rest/services/RoadClosures_public_5fbe51a5cf3847a48b08869bd770b7f6/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Hillsborough County, FL</span><a href="https://services.arcgis.com/apTfC6SUmnNfnxuF/arcgis/rest/services/TTCPermitsV4/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Village of Hoffman Estates, IL</span><a href="https://services3.arcgis.com/wZbN8jfxpSCT3u1Y/arcgis/rest/services/RoadClosures_public_eb12e30ce76542648dd3ec7b3583f653/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Hopkins County, KY</span><a href="https://services5.arcgis.com/TbfgSCnhZia1FQla/arcgis/rest/services/RoadClosures_public_dc8af94f6f65492dbb9d5cce249ec57d/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Houston</span><a href="https://geogimstest.houstontx.gov/arcgis/rest/services/Public_services/MobilityPermit_Transtar/MapServer" rel="nofollow noopener">geogimstest.houstontx.gov</a></li>
+      <li><span>Imperial County, CA</span><a href="https://services7.arcgis.com/RomaVqqozKczDNgd/arcgis/rest/services/RoadClosures_public_139603768e4e4564a4511a7e72781c07/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Independence, IA</span><a href="https://services7.arcgis.com/fzDLiP8WlHKP2SAn/arcgis/rest/services/RoadClosures_public_ad076599b61a49cfa29a51e8c70b0ceb/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Indian Hill, OH</span><a href="https://services.arcgis.com/Y326xMQHGOTpLU5T/arcgis/rest/services/RoadClosures_fc98888ca76747c382764490446a9fdd/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Indianapolis, IN</span><a href="https://indianapolis-public.dotmapsapp.com/publicapi/temporal_entity" rel="nofollow noopener">indianapolis-public.dotmapsapp.com</a></li>
+      <li><span>Ingham County, MI</span><a href="https://services2.arcgis.com/NlCDvR4wg3dBW3fG/arcgis/rest/services/RoadClosures_public_aa152d33b4564310a6d6848bf7190b87/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Irvine, CA</span><a href="https://services2.arcgis.com/3mkVbLdbLBFHrfbK/arcgis/rest/services/RoadClosures_public_34078be8ee1443589ce2ccf64c3d9e39/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Irvine, CA (road construction)</span><a href="https://gis.cityofirvine.org/arcgis/rest/services/RoadConstruction_Pro/MapServer" rel="nofollow noopener">gis.cityofirvine.org</a></li>
+      <li><span>City of Jackson, MI</span><a href="https://services2.arcgis.com/FIG3MnlYFgY7TfkH/arcgis/rest/services/Construction_Projects_(Public)/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Jefferson County, WA</span><a href="https://services3.arcgis.com/RPU019D0wA2T8GMO/arcgis/rest/services/RoadClosures_public_b2ad031dbe524e2b81f263cbc0e1c443/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Jersey City, NJ</span><a href="https://services6.arcgis.com/2oewv53210x7rpGy/arcgis/rest/services/Jersey_City_Traffic_Permit_View_Public/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Johns Creek, GA</span><a href="https://services1.arcgis.com/bqfNVPUK3HOnCFmA/arcgis/rest/services/RoadClosuresConstructionZones/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Johnson City, TN</span><a href="https://services2.arcgis.com/sFeLdas1ukfB6i8T/arcgis/rest/services/RoadClosures_e2449d97cf9e4994b445f7d65916411f_public/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Joliet, IL</span><a href="https://services2.arcgis.com/RMSabPClYIvVQ6Si/arcgis/rest/services/survey123_6866d5984fd24eda8113ea10d21fa234/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Kansas City (Wyandotte County), KS</span><a href="https://services1.arcgis.com/Qo2HHQp8vgPs2wg3/arcgis/rest/services/RoadClosures_public_5a9495bc255d44dfbe577b70aa0b8a8f/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Kansas City, MO</span><a href="https://mapd.kcmo.org/kcgis/rest/services/PW/TrafficControlPermits/MapServer" rel="nofollow noopener">mapd.kcmo.org</a></li>
+      <li><span>City of Kearney, NE</span><a href="https://services9.arcgis.com/uKbDFv95bcJ3anCC/arcgis/rest/services/service_ccf42d7f3b464c70be26fb7d88abf4f8/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of Keller, TX</span><a href="https://services2.arcgis.com/7YcJOHUBjYCdeo36/arcgis/rest/services/RoadClosures_public_f9e79e6533804e6998213c5fbb9feb80/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Kenosha, WI</span><a href="https://services1.arcgis.com/dEWY7aW7h9zHrSP9/arcgis/rest/services/RoadClosures_public_8dcee3724d8941e093a6ff894fa282ac/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Kerrville, TX</span><a href="https://services1.arcgis.com/Ijqs2ihddUy84otW/arcgis/rest/services/RoadClosures_public_0935495e09f94679aaa64184c2c0cf3f/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Kershaw County, SC</span><a href="https://services6.arcgis.com/kyYrMHheB5jkAnFA/arcgis/rest/services/RoadClosures_public_911a1a847b374f08810805e642d2a242/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>King County, WA</span><a href="https://services.arcgis.com/Ej0PsM5Aw677QF1W/arcgis/rest/services/Travel_Alert_Centroids_view/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Kinston, NC</span><a href="https://services5.arcgis.com/oHyVM17u2FMyV4oB/arcgis/rest/services/RoadClosures_public_7bac2a4b2ed84e76b6188221ee60e566/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Kittitas County, WA</span><a href="https://services.arcgis.com/eSnyVpqwqWBADfzp/arcgis/rest/services/RoadClosures_public_5faafaca222a4e099dbead9b2646f861/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Knox County, TN</span><a href="https://services1.arcgis.com/QWaOgwdmpqI9HUzf/arcgis/rest/services/KnoxCountyRdClosures_2_view/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Lafayette Consolidated Government, LA</span><a href="https://services.arcgis.com/fOr4AY8t0ujnJsua/arcgis/rest/services/RoadClosures_2_view/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Lancaster, CA</span><a href="https://services7.arcgis.com/nSZffRgjBDuTMleo/arcgis/rest/services/RoadClosures_Public/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Lansing, MI</span><a href="https://services1.arcgis.com/pNPbgWy7hpfFGWoZ/arcgis/rest/services/2026_Construction_Projects/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Larimer County, CO</span><a href="https://services.arcgis.com/4Y5FNypV9g2Wgf92/arcgis/rest/services/RoadClosures_public_10bf931e45b2427c991f3ccf5f419399/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Las Vegas, NV</span><a href="https://services1.arcgis.com/F1v0ufATbBQScMtY/arcgis/rest/services/Traffic_Barricade_Zones/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Lawrence, KS</span><a href="https://services.arcgis.com/8O9UlSTnqjKptoda/arcgis/rest/services/RoadClosures_public_e47210dc3e8e478dad645a54a63fc31e/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of League City, TX</span><a href="https://services.arcgis.com/SkuMuJtaYy87PKot/arcgis/rest/services/RoadClosures_public_a1a6542ad39d4e2b9e93805aaa00ac40/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Lebanon, OR</span><a href="https://services1.arcgis.com/K1vRaK7vKFsLv6fj/arcgis/rest/services/RoadClosures_public_adb7bd10181a451fa94b0bff8ab0abd0/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Lee County, AL</span><a href="https://services5.arcgis.com/swomwLs3iGyK80EW/arcgis/rest/services/RoadClosures_public_7088f3040eeb49c2a2412d3542085e96/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Lee County, FL</span><a href="https://services2.arcgis.com/LvWGAAhHwbCJ2GMP/arcgis/rest/services/RoadClosures_public_2314d481f9a94c899df9b9e62958d99b/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Leon County, FL</span><a href="https://services.arcgis.com/ptvDyBs1KkcwzQNJ/arcgis/rest/services/RoadClosures_public_6c6ed56fb35547638f1f631cd6e3fc77/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Lexington, NC</span><a href="https://services3.arcgis.com/Z7ioXMhIaRIEQx1O/arcgis/rest/services/RoadClosures_bf7c817b84954619ae5e77affc69f9e1/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Lexington-Fayette Urban County, KY</span><a href="https://services1.arcgis.com/Mg7DLdfYcSWIaDnu/arcgis/rest/services/row_permits_open_view/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Liberty County, GA</span><a href="https://services1.arcgis.com/QYojGMDoGrtAd8qo/arcgis/rest/services/RoadClosures_public2/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Liberty, MO</span><a href="https://services.arcgis.com/70vcD5tpfNSJmyxA/arcgis/rest/services/RoadClosures_public_2581980b45f54c4d917115bd8b2e1420/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Licking County, OH</span><a href="https://services1.arcgis.com/iUtb2L01aPkOaIXu/arcgis/rest/services/RoadClosures_public_9af7c119c6784361a63c0185b614fa33/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Lincoln and Lancaster County, NE</span><a href="https://gis.lincoln.ne.gov/hosted/rest/services/Hosted/RoadClosures_public/FeatureServer" rel="nofollow noopener">gis.lincoln.ne.gov</a></li>
+      <li><span>Lincoln County, NM</span><a href="https://services2.arcgis.com/Rj8QhN9Wb2hxHgpN/arcgis/rest/services/RoadClosures_public_913eb0fb75d849f5aceff5fe6ffcf4bd/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Lincoln, NE (street closures)</span><a href="https://www.lincoln.ne.gov/files/sharedassets/public/ltu/projects/street-closures.kml" rel="nofollow noopener">lincoln.ne.gov</a></li>
+      <li><span>City of Little Rock, AR</span><a href="https://services.arcgis.com/ae4pGnJE2BadeaiV/arcgis/rest/services/RoadClosures_public_885b364e4b724d75879c2f2a07125b65/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Littleton, CO</span><a href="https://services6.arcgis.com/lJUBf9F1fZJRB4zT/arcgis/rest/services/RoadClosures_Website/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Village of Lombard, IL</span><a href="https://services6.arcgis.com/vs0Q5ds549q7lQMm/arcgis/rest/services/ROWPermits/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Longmont, CO</span><a href="https://services1.arcgis.com/Sb0rgSd67ecLKIvl/arcgis/rest/services/RoadClosures_public_a391c761f15642a1bb4b574838dc2495/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Longview, TX</span><a href="https://cloud.longviewtexas.gov/arcgis/rest/services/WebMaps/ProjectsAffectingTravelingPublic/MapServer" rel="nofollow noopener">cloud.longviewtexas.gov</a></li>
+      <li><span>Los Angeles County Public Works, CA</span><a href="https://dpw.gis.lacounty.gov/dpw/rest/services/Road_Closures/MapServer" rel="nofollow noopener">dpw.gis.lacounty.gov</a></li>
+      <li><span>City of Los Angeles, CA (paving and excavation)</span><a href="https://maps.lacity.org/lahub/rest/services/Public_Way_Reservations/MapServer" rel="nofollow noopener">maps.lacity.org</a></li>
+      <li><span>City of Los Angeles, CA (peak-hour lane closures)</span><a href="https://maps.lacity.org/lahub/rest/services/Public_Way_Reservations/MapServer" rel="nofollow noopener">maps.lacity.org</a></li>
+      <li><span>City of Los Angeles, CA (street reservations)</span><a href="https://maps.lacity.org/lahub/rest/services/Public_Way_Reservations/MapServer" rel="nofollow noopener">maps.lacity.org</a></li>
+      <li><span>City of Los Angeles, CA (street work)</span><a href="https://maps.lacity.org/lahub/rest/services/Public_Way_Reservations/MapServer" rel="nofollow noopener">maps.lacity.org</a></li>
+      <li><span>Louisville Metro, KY</span><a href="https://services1.arcgis.com/79kfd2K6fskCAkyg/arcgis/rest/services/Louisville_KY_ROW_Construction_Permits_new/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Loveland, CO</span><a href="https://services1.arcgis.com/d4MV7N9xmuHYbLrF/arcgis/rest/services/RoadClosures_public_9529cedcd58b41d99bd4bec7e32d0a22/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Lubbock, TX</span><a href="https://services2.arcgis.com/eYXun6c1pgy8Qpta/arcgis/rest/services/Traffic_Barricades_WFL1_view/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Lucas County Engineer, OH</span><a href="https://services1.arcgis.com/JVJnGNgPBDy0lB85/arcgis/rest/services/RoadClosures_47654880d77d47a4946462a6bafc0405/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Madera County, CA</span><a href="https://services6.arcgis.com/1t7wwtWWQetYRAXB/arcgis/rest/services/RoadClosures_public_4ae9670dbc1f4d978622a7c033295440/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Madison County, KY</span><a href="https://services2.arcgis.com/vr7o7tw2Aw3SpBdd/arcgis/rest/services/RoadClosures_public_150a3a8ebe6a4e4fbf43e0065b1999a2/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Madison County, OH</span><a href="https://services8.arcgis.com/HCOT30BFUWvevW8A/arcgis/rest/services/RoadClosures_public_eff16/FeatureServer" rel="nofollow noopener">services8.arcgis.com</a></li>
+      <li><span>Manatee County, FL</span><a href="https://services1.arcgis.com/t03WDvnSR7gSDOB2/arcgis/rest/services/RoadClosures_public_8ad767816c4d4a4584a37aed83f610d1/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Mansfield, OH</span><a href="https://services3.arcgis.com/P4xZu3eETYwehKGG/arcgis/rest/services/RoadClosures_public_061f9b4eea24498fa424f74f4b1f7b56/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Maricopa, AZ</span><a href="https://services7.arcgis.com/MlfUGd2UJYefAS7v/arcgis/rest/services/Traffic_Restrictions_Layer_view/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Marietta, GA</span><a href="https://services2.arcgis.com/OKqf9cl3ItPM5Rid/arcgis/rest/services/RoadClosures_public_aa1298dc92ea472f914127ed6b2dcee4/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Marin County, CA</span><a href="https://services6.arcgis.com/T8eS7sop5hLmgRRH/arcgis/rest/services/RoadClosures_public_644e875191144d27aa4ce6e9ea195909/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Mariposa County, CA</span><a href="https://services2.arcgis.com/wEula7SYiezXcdRv/arcgis/rest/services/RoadClosures_public_271d4cf304534572a520b9475e37225f/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Maryland local roads (SHA closure system)</span><a href="https://mdgeodata.md.gov/appdata/rest/services/SHA_RoadClosure/RoadClosurePublic/MapServer" rel="nofollow noopener">mdgeodata.md.gov</a></li>
+      <li><span>City of Mason City, IA</span><a href="https://services1.arcgis.com/84FpxbPitJq31AWu/arcgis/rest/services/RoadClosures_public_609e906e58e344518ca09e9d6aa53cdb/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Matanuska-Susitna Borough, AK</span><a href="https://services.arcgis.com/fX5IGselyy1TirdY/arcgis/rest/services/Road_Closures_Public/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of McKinney, TX</span><a href="https://services1.arcgis.com/B8MwidgHpU2dWUmv/arcgis/rest/services/RoadClosures_public_ba6a6c50ec2b44eb8a5b8eea5ef45ae5/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>McLean County, IL</span><a href="https://services3.arcgis.com/ZntpsilxOye7y1YF/arcgis/rest/services/RoadClosures_public_7e10ca6b3d3a4e6fa88caf9918ade300/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Memphis, TN</span><a href="https://services2.arcgis.com/saWmpKJIUAjyyNVc/arcgis/rest/services/RoadClosures_Public/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Mesa, AZ</span><a href="https://gis.mesaaz.gov/mesaaz/rest/services/Transportation/mTrac/MapServer" rel="nofollow noopener">gis.mesaaz.gov</a></li>
+      <li><span>Metro Nashville, TN</span><a href="https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/RoadClosures_public_b6790041823f4ecf96e7a54e50276f00/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Metro Nashville, TN (right-of-way permits)</span><a href="https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Active_Right-of-Way_Permits/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Miami County, OH</span><a href="https://services3.arcgis.com/wCWf4EGMg4PzHwzA/arcgis/rest/services/RoadClosures_2_view/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Miami, FL</span><a href="https://gis.miami.gov/gis/rest/services/PublicWorks/RPW_Permit_Status/MapServer" rel="nofollow noopener">gis.miami.gov</a></li>
+      <li><span>City of Midland</span><a href="https://services.arcgis.com/0H6bQdxd9223gQB5/arcgis/rest/services/City_of_Midland_Road_Construction_Projects_Updated/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Millcreek, UT</span><a href="https://services9.arcgis.com/XRrSFvEwSsReIxuA/arcgis/rest/services/RoadClosures_public_231c473eb304436788040dd1b2aa6af3/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>Milwaukee County, WI</span><a href="https://services2.arcgis.com/s1wgJQKbKJihhhaT/arcgis/rest/services/RoadClosures_public_3c7212887b91472e961d6330e1df76b2/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Milwaukee, WI</span><a href="https://services1.arcgis.com/5ly0cVV70qsN8Soc/arcgis/rest/services/RoadClosures_public_b86aba6405af4e3da09a587f68788b0f/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Minneapolis, MN</span><a href="https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/Current_Projects_and_Events_v2/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Minnetonka, MN</span><a href="https://services.arcgis.com/vAmq2qjze38HN5HF/arcgis/rest/services/RoadClosures_public_f84c420471af4f999e1991fe25e87b68/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Missoula, MT</span><a href="https://citycentralmaps.ci.missoula.mt.us/arcgis/rest/services/Hosted/RoadReport_view/FeatureServer" rel="nofollow noopener">citycentralmaps.ci.missoula.mt.us</a></li>
+      <li><span>City of Missouri City, TX</span><a href="https://services2.arcgis.com/6vRbgYSxztFGZwla/arcgis/rest/services/RoadClosures_public_935e70c28b5e478faf9fde34e93a8fe0/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Mobile County, AL</span><a href="https://services2.arcgis.com/dJHAcAx6kccDBtM6/arcgis/rest/services/RoadClosures_public/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Modesto, CA</span><a href="https://services1.arcgis.com/KN76x1eyfvozZO4M/arcgis/rest/services/RoadClosures_public_d68839f9eb8443889b8f107cc03058b5/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Monroe County, IN</span><a href="https://services1.arcgis.com/nYfGJ9xFTKW6VPqW/arcgis/rest/services/RoadClosures_public_a46d326bbbdb43fabbbfc0441e69c235/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Monterey County, CA</span><a href="https://services2.arcgis.com/nOGTdfb4kF4dZljH/arcgis/rest/services/Road_Closures_public/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Montgomery County, TX</span><a href="https://services1.arcgis.com/PRoAPGnMSUqvTrzq/arcgis/rest/services/Road_Block_Point_Active/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Montgomery Township, PA</span><a href="https://services3.arcgis.com/JIovTcv1KPd5wmrk/arcgis/rest/services/RoadClosures_public_331586eb36e04428ac24459f79d634b2/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Montgomery, AL</span><a href="https://gis.montgomeryal.gov/server/rest/services/HostedDatasets/Paving_Project/FeatureServer" rel="nofollow noopener">gis.montgomeryal.gov</a></li>
+      <li><span>City of Moorhead, MN</span><a href="https://services.arcgis.com/t2tplTEKxuL7eSvF/arcgis/rest/services/RoadClosures_public_17b4e1427de74929ae2d72a0882ea16f/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Morgantown, WV</span><a href="https://services7.arcgis.com/lE5mQkgxehcTjzKf/arcgis/rest/services/RoadClosures_public_8e28e9bcd73045f3ab325811fba28091/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>Mountain House, CA</span><a href="https://services7.arcgis.com/wZSvzjji3IxpK7fW/arcgis/rest/services/RoadClosures_public_f58bcf63ca104c50bd0b1947fea76dca/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Mt. Juliet, TN</span><a href="https://services1.arcgis.com/SXlSqsMsFxtSuzjx/arcgis/rest/services/RoadClosures_public_a44bdbd98fc34faf995f115fb527b3f4/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Murfreesboro, TN</span><a href="https://services5.arcgis.com/A5C0MR9xfkxVRwat/arcgis/rest/services/Road_Block-Closures_READ_ONLY_view/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Myrtle Beach, SC</span><a href="https://services2.arcgis.com/650sW8BhgpAHhq6u/arcgis/rest/services/RoadClosures_79f8a9760fe5400781d766593374f53a/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Nampa Highway District, ID</span><a href="https://services8.arcgis.com/AgeNRt4pRjdrFe4Y/arcgis/rest/services/RoadClosures_public_520a50c34d214587b8f6cfa5f6c41b67/FeatureServer" rel="nofollow noopener">services8.arcgis.com</a></li>
+      <li><span>City of Nampa, ID</span><a href="https://utility.arcgis.com/usrsvcs/servers/7751a4c516434f1d947c67cd78a4d968/rest/services/Public/PublicRoadClosures/FeatureServer" rel="nofollow noopener">utility.arcgis.com</a></li>
+      <li><span>City of Napa, CA</span><a href="https://services.arcgis.com/KYQI4l6C3kTBM5OU/arcgis/rest/services/RoadClosures_public_073c4318a6b4417c9f07976b6b811076/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Nassau County, FL</span><a href="https://services5.arcgis.com/F73IhFZbCCYUexxB/arcgis/rest/services/RoadClosures_public_96c9e3da584348db8b9079f09a47f486/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of New Braunfels, TX</span><a href="https://gismaps.newbraunfels.gov/arcserverwa22/rest/services/MapServices/RoadClosures/MapServer" rel="nofollow noopener">gismaps.newbraunfels.gov</a></li>
+      <li><span>City of New Orleans, LA</span><a href="https://services.arcgis.com/VhMjCzR3cIjEkh7L/arcgis/rest/services/StreetCutPermits_View/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>New York City DOT</span><a href="https://data.cityofnewyork.us/resource/i6b5-j7bu.json" rel="nofollow noopener">data.cityofnewyork.us</a></li>
+      <li><span>City of Norfolk, VA</span><a href="https://data.norfolk.gov/resource/mi4h-8pn3.json" rel="nofollow noopener">data.norfolk.gov</a></li>
+      <li><span>City of Novi, MI</span><a href="https://services1.arcgis.com/jwbgoAzqzCbiJmg4/arcgis/rest/services/RoadClosures_public_c6ace5969c38441292a6fa8dc89d8ae2/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Oak Harbor, WA</span><a href="https://services9.arcgis.com/SVlf413Qqlzv09Uo/arcgis/rest/services/RoadClosures_public_b90d2734e80c46edbdcd93b6870fa02b/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of Ocala, FL</span><a href="https://services1.arcgis.com/Xt7esznjGcR11P3w/arcgis/rest/services/RoadClosures_public_78f77eede0d1464a9363096ca0eacd63/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Ogden City, UT</span><a href="https://services.arcgis.com/5bEsxSBu0dtu5rkP/arcgis/rest/services/RoadClosures_05f4cbc1a37b4e328b5066cfcbfb3d15_public/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Oklahoma City, OK</span><a href="https://utility.arcgis.com/usrsvcs/servers/ead80c5e4e4e4c719359217f704a0c4c/rest/services/OpenData/Transportation/FeatureServer" rel="nofollow noopener">utility.arcgis.com</a></li>
+      <li><span>City of Olathe, KS</span><a href="https://arcgis.olatheks.org/arcgis/rest/services/Streets/Streets_RoadConstruction/MapServer" rel="nofollow noopener">arcgis.olatheks.org</a></li>
+      <li><span>City of Omaha</span><a href="https://dcgis.org/server/rest/services/Hosted/Traffic_Closure_and_Restrictions_6_view/FeatureServer" rel="nofollow noopener">dcgis.org</a></li>
+      <li><span>City of Orlando, FL</span><a href="https://gis.orlando.gov/server/rest/services/Traffic_Control/Road_Closures_Public_Viewing_Layers/MapServer" rel="nofollow noopener">gis.orlando.gov</a></li>
+      <li><span>City of Oshkosh, WI</span><a href="https://services1.arcgis.com/FxsZDd9jOLijkyzz/arcgis/rest/services/RoadClosures_public_2a40276e4da842f1862f0b4e4ebf81f1/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Ottawa County, MI</span><a href="https://services2.arcgis.com/ixRLoNIl4gmM9jgg/arcgis/rest/services/Public_Road_Closures/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Overland Park, KS</span><a href="https://maps.opkansas.org/mapping/rest/services/Road_Closure/MapServer" rel="nofollow noopener">maps.opkansas.org</a></li>
+      <li><span>Owensboro and Daviess County, KY</span><a href="https://services1.arcgis.com/0qqIwtRYsyVJ7lna/arcgis/rest/services/RoadClosures_public_ffe2a3ebe4d142c3987b1ba77968e587/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Palm Coast and Flagler County, FL</span><a href="https://services3.arcgis.com/hSKL9bYjhP4rHxSD/arcgis/rest/services/RoadClosures_public_05e712c3772c41c390cbe3fa51f30b8a/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Park County, MT</span><a href="https://services3.arcgis.com/De8iY1SoM3l4PKku/arcgis/rest/services/RoadClosures_public_da76d7ec12054d92aa5b480a2aef2676/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Pasadena, CA</span><a href="https://services2.arcgis.com/zNjnZafDYCAJAbN0/arcgis/rest/services/RoadClosures_public_a7e72907fdcb4a779a2765f563cb3401/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Payson City, UT</span><a href="https://services3.arcgis.com/y9LRYRMcZXLzJBeh/arcgis/rest/services/RoadClosures_2_view/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Pennington County, SD</span><a href="https://services.arcgis.com/NYzD3RdsOTglw6xI/arcgis/rest/services/Road_Closures_view/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Peoria, IL</span><a href="https://services.arcgis.com/cegbFWRopG1y5wiH/arcgis/rest/services/Road_Closure_Line_(View)/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Philadelphia</span><a href="https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/LaneClosure_Master/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Phoenix, AZ</span><a href="https://maps.phoenix.gov/pub/rest/services/Public/TrafficRestrictions/MapServer" rel="nofollow noopener">maps.phoenix.gov</a></li>
+      <li><span>City of Phoenix, AZ (intersection restrictions)</span><a href="https://maps.phoenix.gov/pub/rest/services/Public/TrafficRestrictions/MapServer" rel="nofollow noopener">maps.phoenix.gov</a></li>
+      <li><span>Pierce County, WA</span><a href="https://services2.arcgis.com/1UvBaQ5y1ubjUPmd/arcgis/rest/services/RoadClosures_public_55071dbd78a84152b95455946e33ca3a/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Pinellas County, FL</span><a href="https://services.arcgis.com/f5HgUpxURgEzTccH/arcgis/rest/services/Pinellas_Road_Closures_view/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Pittsburgh</span><a href="https://data.wprdc.org/api/3/action/datastore_search" rel="nofollow noopener">data.wprdc.org</a></li>
+      <li><span>Placer County, CA</span><a href="https://services9.arcgis.com/NENkjkswKTzMfG3A/arcgis/rest/services/PW_Road_Closures_Segments/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of Plano</span><a href="https://maps.planogis.org/arcgiswad/rest/services/PlanoGISintegrations/ESRICommunityBasemap_RoadClosures/FeatureServer" rel="nofollow noopener">maps.planogis.org</a></li>
+      <li><span>Polk County, MN</span><a href="https://gis.co.polk.mn.us/arcgis/rest/services/RoadClosures/RoadClosures/FeatureServer" rel="nofollow noopener">gis.co.polk.mn.us</a></li>
+      <li><span>City of Port St. Lucie, FL</span><a href="https://services1.arcgis.com/YdUP5V6WwzeG8T8r/arcgis/rest/services/PW_Road_Closings/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Portland, OR (right-of-way uses)</span><a href="https://www.portlandmaps.com/arcgis/rest/services/Public/PBOT_ROW_Coordination/MapServer" rel="nofollow noopener">portlandmaps.com</a></li>
+      <li><span>City of Portland, OR (road closures)</span><a href="https://www.portlandmaps.com/arcgis/rest/services/Public/PBOT_ROW_Coordination/MapServer" rel="nofollow noopener">portlandmaps.com</a></li>
+      <li><span>City of Prescott, AZ</span><a href="https://services5.arcgis.com/A6QJYdVM7iLWspvE/arcgis/rest/services/RoadClosures_public_26b444f35d074ae1ba38a815b9e7c223/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Providence, RI</span><a href="https://services6.arcgis.com/wv9mHoqblhTsnqdG/arcgis/rest/services/Utility_Projects_(View)/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Putnam County, TN</span><a href="https://services1.arcgis.com/bnkHG6EjYZUDa3UU/arcgis/rest/services/RoadClosures_public_cf7759cb37eb4f238362a62e63995327/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Town of Queen Creek, AZ</span><a href="https://services1.arcgis.com/t16ZiY9Utsg4bsyA/arcgis/rest/services/RoadClosures_view/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Racine, WI</span><a href="https://services5.arcgis.com/WgCOhpTBP3tb7eDk/arcgis/rest/services/RoadClosures_public_07c462f81d6145fe9897b7b1e9008929/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Raleigh, NC</span><a href="https://services.arcgis.com/v400IkDOw1ad7Yad/arcgis/rest/services/RoadClosures_public_f787e51f55bf4a9491e8001b68bdae1d/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Ramsey County, ND</span><a href="https://services1.arcgis.com/Ppx8SK7eYa16HHRW/arcgis/rest/services/RoadClosures_public_973d681b95bf4eb1966491764f6a07eb/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Rancho Mirage, CA</span><a href="https://services1.arcgis.com/LgDVQaAg05xQLgo7/arcgis/rest/services/RoadClosures_public_5f2969454bf647cd869905f2872f72ac/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Rapid City, SD</span><a href="https://services.arcgis.com/NYzD3RdsOTglw6xI/arcgis/rest/services/Active_Construction_Projects_Update_view2/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Red Oak, TX</span><a href="https://services7.arcgis.com/URKkSE6MsjA926qB/arcgis/rest/services/RoadClosures_public_1dcca16514354e848114afbb24914afc/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Reno, NV</span><a href="https://pwmaps.reno.gov/server/rest/services/PublicWorks/Reno_Road_Construction_VIEW/MapServer" rel="nofollow noopener">pwmaps.reno.gov</a></li>
+      <li><span>City of Richardson</span><a href="https://services2.arcgis.com/5aVZxf6eblRfH5Yb/arcgis/rest/services/RoadClosures_public_b8d0118f25054442b907d17d798caa95/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Richland County, OH</span><a href="https://services7.arcgis.com/unbh23uc39tls4N4/arcgis/rest/services/Road_Closures_WFL1/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Richmond, VA (utility street closures)</span><a href="https://services1.arcgis.com/k3vhq11XkBNeeOfM/arcgis/rest/services/Utility_Work_Locations_and_Street_Closures_view/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Richmond, VA (utility street work)</span><a href="https://services1.arcgis.com/k3vhq11XkBNeeOfM/arcgis/rest/services/Utiltiy_Projects_view/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Riverside County, CA</span><a href="https://gis.countyofriverside.us/arcgis/rest/services/road_closures/roadClosures_fSrvc_prod/FeatureServer" rel="nofollow noopener">gis.countyofriverside.us</a></li>
+      <li><span>Town of Roanoke, TX</span><a href="https://services7.arcgis.com/ZVnoRrwr69yZLQgK/arcgis/rest/services/RoadClosures_public_4afb002bfe38430caebc67ceb44bce8a/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Roanoke, VA</span><a href="https://services.arcgis.com/KII0S5XRkpE66Ngk/arcgis/rest/services/RoadClosures_7a109394b12c4932ab62f115a027f041/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Rochester Hills, MI</span><a href="https://services2.arcgis.com/mAHz4TNZ3K1d0hNn/arcgis/rest/services/RoadClosures_public_58755e31e5e543459e5e8ea2a51d1d37/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Rochester, MN</span><a href="https://services1.arcgis.com/zC7pGkrIoR451W0i/arcgis/rest/services/RoadClosures_public_4fefe36a5c024aa79bf5895536b94ad4/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Rogers, AR</span><a href="https://services1.arcgis.com/zsny8x7Yh9eajjke/arcgis/rest/services/RoadClosures_public_4a105f8d72184940b926d965c85e93b0/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Rosemount, MN</span><a href="https://services2.arcgis.com/g9tzqCz1E9uQq6Yy/arcgis/rest/services/RoadClosures_public_a3566c17afdc48f4b9ab7890060db2f8/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Routt County, CO</span><a href="https://services6.arcgis.com/VxFGFP4XeHMTNgVs/arcgis/rest/services/RoadClosures_public_e3cd96a137aa42b2b8ffdeedd5bcebc6/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>RTC of Southern Nevada, NV</span><a href="https://webgis.rtcsnv.com/arcgis/rest/services/Web/RPC/FeatureServer" rel="nofollow noopener">webgis.rtcsnv.com</a></li>
+      <li><span>City of Sacramento, CA</span><a href="https://services5.arcgis.com/54falWtcpty3V47Z/arcgis/rest/services/RoadClosures_Public_View/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Saginaw, MI</span><a href="https://services5.arcgis.com/uZSnuwEa6FV4eYFk/arcgis/rest/services/Road_Closures_GDB/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Salem, IL</span><a href="https://services8.arcgis.com/EuvRnbSnPtbh74oK/arcgis/rest/services/RoadClosures_public_be9335aba3c649b9a251262761ae7a8b/FeatureServer" rel="nofollow noopener">services8.arcgis.com</a></li>
+      <li><span>City of Salem, OR</span><a href="https://services.arcgis.com/kIA6yS9KDGqZL7U3/arcgis/rest/services/RoadWork/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Salem, OR (emergency and event closures)</span><a href="https://services.arcgis.com/kIA6yS9KDGqZL7U3/arcgis/rest/services/RoadClosures_public_6d81960fc8274ff99a000fb0077c4f08/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Saline County, KS</span><a href="https://services2.arcgis.com/cuBVqVP04yYSBGZ9/arcgis/rest/services/Closed_Roads_NEW/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Salisbury, MD</span><a href="https://services6.arcgis.com/Hx8jJ6McXQ0jnqLk/arcgis/rest/services/RoadClosures_public_675963c490164638807c37df13b509a7/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Salt Lake City, UT</span><a href="https://maps.slc.gov/server/rest/services/Public_Maps/EngROWPermits/MapServer" rel="nofollow noopener">maps.slc.gov</a></li>
+      <li><span>San Antonio River Authority, TX</span><a href="https://services2.arcgis.com/Eb8y2VjBgkqbQJwk/arcgis/rest/services/RoadClosures_public_3633ebd1aa074a0bb252d54006f75f23/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of San Antonio, TX</span><a href="https://services.arcgis.com/g1fRTDLeMgspWrYp/arcgis/rest/services/ROW_Permitting/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>San Bernardino County, CA</span><a href="https://services.arcgis.com/ZZ0KZXZVmgB1v555/arcgis/rest/services/RoadClosures_89e62fc252ba4ce3b88ac0b524ebd6f0_public/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of San Diego, CA</span><a href="https://webmaps.sandiego.gov/arcgis/rest/services/DoIT_Public/DSDPermits/MapServer" rel="nofollow noopener">webmaps.sandiego.gov</a></li>
+      <li><span>San Joaquin County, CA</span><a href="https://services2.arcgis.com/GQhSReJEO6f7tsvy/arcgis/rest/services/ScheduledRoadClosures/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of San Jose</span><a href="https://geo.sanjoseca.gov/server/rest/services/OPN/OPN_OpenDataService/MapServer" rel="nofollow noopener">geo.sanjoseca.gov</a></li>
+      <li><span>San Juan County, NM</span><a href="https://services.arcgis.com/Iq7du96UAXAOM1at/arcgis/rest/services/RoadClosures_public_2138e33169f84386aff983b9a18b12b4/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>San Luis Obispo County, CA</span><a href="https://services6.arcgis.com/M6e56DqzbdJf20YO/arcgis/rest/services/ROAD_CLOSURE_STATUS_POINTS/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of San Marcos, CA</span><a href="https://services1.arcgis.com/e7Mp0AHrN8K5Kx6X/arcgis/rest/services/Road_Closures_Public_View/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of San Marcos, TX</span><a href="https://services1.arcgis.com/Hug9pbs2TYetbCha/arcgis/rest/services/RoadClosures_public_ef2144f117444ff6b5d6859f114f00a5/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Sandy Springs, GA</span><a href="https://services5.arcgis.com/buITjRsK0rZsAXbQ/arcgis/rest/services/RoadClosures_public_fab1c8a70d464be4b98434cb3d19d7dc/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Santa Ana, CA</span><a href="https://services1.arcgis.com/u3G8zpmDyNtG4F4e/arcgis/rest/services/Construction_Projects_Layer_VIEW/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Santa Barbara County, CA</span><a href="https://services.arcgis.com/KkJhFbLnXVqahKz2/arcgis/rest/services/Road_Closures_Public/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Santa Clarita, CA</span><a href="https://services6.arcgis.com/VIT2lop0SYQZYGmw/arcgis/rest/services/RoadClosures_active_public_41f0438c44754decb37b65a9d4f11071/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Sarasota, FL</span><a href="https://services3.arcgis.com/AWDwYUpli8WqpWxQ/arcgis/rest/services/Road_Closures_(View_Only)/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Saratoga Springs, UT</span><a href="https://utility.arcgis.com/usrsvcs/servers/7a04c369ed884f329bfc911fc616b961/rest/services/Operations/RoadClosures/MapServer" rel="nofollow noopener">utility.arcgis.com</a></li>
+      <li><span>Sarpy County, NE</span><a href="https://services.arcgis.com/OiG7dbwhQEWoy77N/arcgis/rest/services/RoadClosures_public_6151731376884bab835c50a12eeb00e3/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Scottsdale, AZ</span><a href="https://maps.scottsdaleaz.gov/arcgis/rest/services/OpenData/MapServer" rel="nofollow noopener">maps.scottsdaleaz.gov</a></li>
+      <li><span>City of SeaTac, WA</span><a href="https://services3.arcgis.com/DLryYCwhA8W7Jq7Q/arcgis/rest/services/RoadClosures_public_239e813145994a5cbd43b97d6f4efd4e/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Seattle DOT</span><a href="https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/SU_Permit_Data_Model_Relationships/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Sedgwick County, KS</span><a href="https://services7.arcgis.com/McLat6HlPl45bNBv/arcgis/rest/services/Public_PW_RoadClosures_WGS84/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Sedona, AZ</span><a href="https://services.arcgis.com/nwMhqPmlv3dUTwxd/arcgis/rest/services/RoadClosures_public_1c3b66c628984fd9950c163e7046c7b0/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>SFMTA</span><a href="https://data.sf.gov/resource/8x25-yybr.json" rel="nofollow noopener">data.sf.gov</a></li>
+      <li><span>Shelby County, IA</span><a href="https://services3.arcgis.com/QMQAPFqiADHUGUCS/arcgis/rest/services/RoadClosures_public_376a1372ee11481b8aab6fd854048f7a/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Sioux Falls, SD</span><a href="https://services.arcgis.com/YpECgwASS4iMvgsA/arcgis/rest/services/Sioux_Falls_Closure_Layers_view/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Siskiyou County, CA</span><a href="https://services3.arcgis.com/JmPiYilyU1x5zuxM/arcgis/rest/services/RoadClosures_public_03f98f7d73584d7a83f7f609f65042d2/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Smith County, TX</span><a href="https://services3.arcgis.com/dPuMck04cWB2fx4h/arcgis/rest/services/RoadClosures/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Town of Snowmass Village, CO</span><a href="https://services5.arcgis.com/0PdKqeTVE9YtLtYT/arcgis/rest/services/RoadClosures_public_5163853f76004a7a9a5d95553f664d32/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Sonoma County, CA</span><a href="https://services1.arcgis.com/P5Mv5GY5S66M8Z1Q/arcgis/rest/services/RoadClosuresView/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of South Lake Tahoe, CA</span><a href="https://www.csltbusiness.com/gisserver/rest/services/Hosted/RoadClosures_public/FeatureServer" rel="nofollow noopener">csltbusiness.com</a></li>
+      <li><span>Spalding County, GA</span><a href="https://services5.arcgis.com/IBG8fFojdkoiHAvQ/arcgis/rest/services/RoadClosures_public_0591fb123eb84220a93c52b5b47829e3/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>Spokane region (SRTMC), WA</span><a href="https://www.srtmc.org" rel="nofollow noopener">srtmc.org</a></li>
+      <li><span>Spokane Valley Fire Department, WA</span><a href="https://services6.arcgis.com/Aip67tTU3LqrNVrO/arcgis/rest/services/Road_Restrictions_View/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Springdale, AR</span><a href="https://services7.arcgis.com/v8pbwu50YraKfEkJ/arcgis/rest/services/RoadClosures_public_6d7f419be01f4c75a4ad095aef0c4bba/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Springfield, MO</span><a href="https://maps.springfieldmo.gov/arcgis/rest/services/Maps/UCuts/MapServer" rel="nofollow noopener">maps.springfieldmo.gov</a></li>
+      <li><span>City of St. Paul</span><a href="https://services1.arcgis.com/9meaaHE3uiba0zr8/arcgis/rest/services/Public_Works_Road_Closures_(Public_View)/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of St. Petersburg, FL</span><a href="https://egis.stpete.org/arcgis/rest/services/ServicesENG/Road_Closures/MapServer" rel="nofollow noopener">egis.stpete.org</a></li>
+      <li><span>St. Tammany Parish, LA</span><a href="https://services8.arcgis.com/xqfvcYWRsxGrAkQR/arcgis/rest/services/Road_Closures_Public_Dashboard/FeatureServer" rel="nofollow noopener">services8.arcgis.com</a></li>
+      <li><span>City of Stamford, CT</span><a href="https://services3.arcgis.com/V28nrLFIbcYZbnPl/arcgis/rest/services/Paving_InProgress_2026/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Stanislaus County, CA</span><a href="https://services6.arcgis.com/06ZSNFkzvRmuFiWS/arcgis/rest/services/Road_Closures_and_Warnings_(Public)/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Stark County, IL</span><a href="https://services6.arcgis.com/IMZwRRU1qL5MDxBH/arcgis/rest/services/RoadClosures_PublicView/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Stark County, OH</span><a href="https://services2.arcgis.com/1JiK2PayqrHvvJhM/arcgis/rest/services/RoadClosures_public_8547f64e67844b8b9f790d75a038ab66/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Starkville, MS</span><a href="https://services1.arcgis.com/RTaez8fHeIiDRbgb/arcgis/rest/services/RoadClosures_public_d15c85d61e2f4af48d71f3ddec90c8ad/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Summit County, OH</span><a href="https://services6.arcgis.com/dmNYNuTJZDtkcRJq/arcgis/rest/services/RoadClosures_public_99d83d607173433a80b68b8f8c61d057/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of Sunset Hills, MO</span><a href="https://services7.arcgis.com/ttHSspsMzdaFZ1ps/arcgis/rest/services/RoadClosures_public_5d6ebe97a6904cff9e7d4047fd82f2d1/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>Susquehanna Township, PA</span><a href="https://services3.arcgis.com/QfkwgWfn0iqsO8mH/arcgis/rest/services/RoadClosures_public_765dc80789b04836a2b02a7f54a036c1/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Tacoma, WA</span><a href="https://services3.arcgis.com/SCwJH1pD8WSn5T5y/arcgis/rest/services/RoadClosures_public_4c25e1bf19fa4b44873c0be9024c8f33/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Tallahassee, FL</span><a href="https://services.arcgis.com/ptvDyBs1KkcwzQNJ/arcgis/rest/services/RoadClosures_public_5090243703cf49128e90ebb3e9a19dca/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Tallmadge, OH</span><a href="https://services7.arcgis.com/biVsKQeAAQuVO5zS/arcgis/rest/services/RoadClosures_public_24ac68c2985143d4851df33493845d92/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Tampa, FL</span><a href="https://arcgis.tampagov.net/arcgis/rest/services/Transportation/ROWPermits/FeatureServer" rel="nofollow noopener">arcgis.tampagov.net</a></li>
+      <li><span>City of Tarpon Springs, FL</span><a href="https://services7.arcgis.com/uPEHWbHQ6349r7Xq/arcgis/rest/services/RoadClosures_public_10f5ccf389fd4c2bbdd5d20db8033d31/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Taylorsville, UT</span><a href="https://services3.arcgis.com/2mExWLvPG4dA2gsK/arcgis/rest/services/RoadClosures_public_665c184e367a49539b61e17298f78b06/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>Tehama County, CA</span><a href="https://services2.arcgis.com/3iNbxbY9zhyxPvde/arcgis/rest/services/RoadClosures_39edc79747314e1198a7d84e05792150_public/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Terre Haute, IN</span><a href="https://services6.arcgis.com/0ptbCjqlbZCdwqMS/arcgis/rest/services/RoadClosures_3dbfd827b18d48aead2f8af0e7942f8f/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Teton County, WY</span><a href="https://services9.arcgis.com/6ukHJ1QHS9lvQoRO/arcgis/rest/services/RoadClosures_public_e8ea8c3a825645f3b74f657c09433efd/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of The Dalles, OR</span><a href="https://services8.arcgis.com/7bHfVCS237lOuIUg/arcgis/rest/services/RoadClosures_public_8a5db2be5e724f80825ef32470dd79a5/FeatureServer" rel="nofollow noopener">services8.arcgis.com</a></li>
+      <li><span>City of Topeka, KS</span><a href="https://maps.topeka.gov/arcgis/rest/services/Operations/Road_Closures_General/MapServer" rel="nofollow noopener">maps.topeka.gov</a></li>
+      <li><span>City of Torrington, CT</span><a href="https://services7.arcgis.com/cszgVAzZgLvRmS7T/arcgis/rest/services/RoadClosures_public_2e0fc69b23894d519f9fac2348189810/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Troy, OH</span><a href="https://services2.arcgis.com/x918hwvMFkK14smu/arcgis/rest/services/RoadClosures_public/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Tucson, AZ</span><a href="https://gis.tucsonaz.gov/public/rest/services/PublicMaps/PermitsCode/MapServer" rel="nofollow noopener">gis.tucsonaz.gov</a></li>
+      <li><span>City of Tulsa, OK (event closures)</span><a href="https://utility.arcgis.com/usrsvcs/servers/055dfdd1f0624e06b2855c685f4eea95/rest/services/WIN/Events/MapServer" rel="nofollow noopener">utility.arcgis.com</a></li>
+      <li><span>City of Tumwater, WA</span><a href="https://services6.arcgis.com/ovypB8ighP2NPfFE/arcgis/rest/services/RoadClosures_public_79ec536623a045acaa6a37114a92278c/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>Tuscaloosa County, AL</span><a href="https://services.arcgis.com/AWzSDaKZ41uuVges/arcgis/rest/services/Road_projects_and_closures_(public_view)/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Tuscaloosa, AL</span><a href="https://services1.arcgis.com/DADyRNMb7tdzKmmq/arcgis/rest/services/Road_Closures_view_Public_20200629/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Union County, NC</span><a href="https://services2.arcgis.com/Z7YhSKLuj0a3XHN6/arcgis/rest/services/Road_Closures_Replica/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>City of Uvalde, TX</span><a href="https://services9.arcgis.com/rYuBOBpgZpvgUVEM/arcgis/rest/services/RoadClosures_public_df22014c5d0146c8ac2a0080c72ad7f1/FeatureServer" rel="nofollow noopener">services9.arcgis.com</a></li>
+      <li><span>City of Vancouver, WA</span><a href="https://services.arcgis.com/oNvpY90qsPDizwkN/arcgis/rest/services/RoadClosures_public_396f8aa3360f45b2b98cbaeb9c01a562/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Ventura County, CA</span><a href="https://services5.arcgis.com/LU8yNTyyh8FrdvWy/arcgis/rest/services/ActiveRoadClosures/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of Virginia Beach, VA</span><a href="https://services1.arcgis.com/iM09lHgNpufqQHem/arcgis/rest/services/RoadClosures_public_5f93f2a6d9584e55b5d9bbbc303e968b/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Waco, TX</span><a href="https://services2.arcgis.com/oUXiR7ziAPAzGw6X/arcgis/rest/services/WacoRoadClosuresApp-RoadCloseLayer_View/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>Town of Wake Forest, NC</span><a href="https://services1.arcgis.com/gqTCvanrwF2z2HEu/arcgis/rest/services/RoadClosures_public_9b5924b08df8487980a73b3c5ca349f4/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Waller County, TX</span><a href="https://services1.arcgis.com/BqVKz0o32DERqyE4/arcgis/rest/services/RoadClosures_public_96d8d9d4a7794434af72a7d4680665e7/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Wasatch County, UT</span><a href="https://services1.arcgis.com/EQOIfJIstOsYk5kO/arcgis/rest/services/RoadClosures_public_d900c4fd38d94145bcc42ba37aea8573/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Washington County, WI</span><a href="https://maps.washcowisco.gov/server/rest/services/Hosted/RoadClosures_public_fb24ec4829864b988e127ee255edc7dd/FeatureServer" rel="nofollow noopener">maps.washcowisco.gov</a></li>
+      <li><span>Washington, DC</span><a href="https://services.arcgis.com/neT9SoYxizqTHZPH/arcgis/rest/services/RoadClosures_publicview/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Washington, DC (DDOT permits)</span><a href="https://maps2.dcgis.dc.gov/dcgis/rest/services/DDOT/TOPS/MapServer" rel="nofollow noopener">maps2.dcgis.dc.gov</a></li>
+      <li><span>Waukesha County, WI</span><a href="https://services.arcgis.com/5mNcDbMaBDRgBsIc/arcgis/rest/services/Road_Closures_Public_View_(updated)/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Webster, TX</span><a href="https://services1.arcgis.com/jTMGdwGfKulaQiS9/arcgis/rest/services/RoadClosures_public_ef2f3b82675f400d99cc9aa3196e2025/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Town of Wellesley, MA</span><a href="https://services6.arcgis.com/f6G5SbcwuEVmR1CW/arcgis/rest/services/RoadClosures_public_71b4a7204b48492ba9d59d977a493434/FeatureServer" rel="nofollow noopener">services6.arcgis.com</a></li>
+      <li><span>City of West Columbia, SC</span><a href="https://services5.arcgis.com/A56vsmaRYeXpHm01/arcgis/rest/services/RoadClosures/FeatureServer" rel="nofollow noopener">services5.arcgis.com</a></li>
+      <li><span>City of West Fargo, ND</span><a href="https://services.arcgis.com/kycwcva1achR3cJA/arcgis/rest/services/RoadClosures_public_9bb46a32341d4c5ca4e8d89af19642ad/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Whatcom County, WA</span><a href="https://services1.arcgis.com/6jEyBm2OMIBxuM1E/arcgis/rest/services/RoadClosures_public_dec1fff94c6a4de49fd2db6af5d9a75d/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Whiteside County, IL</span><a href="https://services.arcgis.com/l0M0OC6J9QAHCiGx/arcgis/rest/services/RoadClosures_public_c50d5a7bf7334bb7bb3dd8e70482fd14/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>Town of Whitestown, IN</span><a href="https://services3.arcgis.com/mHzLz9pyDvq3Hzze/arcgis/rest/services/RoadClosures_public_fba9fa5cacde4a92a2f7ecf55eeb0b99/FeatureServer" rel="nofollow noopener">services3.arcgis.com</a></li>
+      <li><span>City of Wichita</span><a href="https://gismaps.wichita.gov/ageweb/rest/services/Editing/Street_Closures/MapServer" rel="nofollow noopener">gismaps.wichita.gov</a></li>
+      <li><span>Will County, IL</span><a href="https://gis.willcountyillinois.com/hosting/rest/services/Hosted/Construction_Project_Roadways_(View)/FeatureServer" rel="nofollow noopener">gis.willcountyillinois.com</a></li>
+      <li><span>Williams County, ND</span><a href="https://services1.arcgis.com/D85sDZoJyameepNh/arcgis/rest/services/RoadClosures1/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>City of Wilmington, DE</span><a href="https://services.arcgis.com/hQ3wdpbjO3fPf612/arcgis/rest/services/RoadClosuresEB_public/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Windsor Heights, IA</span><a href="https://services7.arcgis.com/8RwKi2LLikcXZsxi/arcgis/rest/services/RoadClosures_2_view/FeatureServer" rel="nofollow noopener">services7.arcgis.com</a></li>
+      <li><span>City of Winter Haven, FL</span><a href="https://services.arcgis.com/hNKc1r3SBL6SVC6I/arcgis/rest/services/RoadClosures_public_4c61ea9e8ffd4ce8acc9651d80abb95d/FeatureServer" rel="nofollow noopener">services.arcgis.com</a></li>
+      <li><span>City of Worcester, MA</span><a href="https://services1.arcgis.com/j8dqo2DJE7mVUBU1/arcgis/rest/services/All_DTM_DPWP_PM_Construction/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+      <li><span>Yolo County, CA</span><a href="https://services2.arcgis.com/RETsakmE0SJfZXCd/arcgis/rest/services/Road_Construction_publicview/FeatureServer" rel="nofollow noopener">services2.arcgis.com</a></li>
+      <li><span>York County, SC</span><a href="https://services1.arcgis.com/2AGLxyiJoNiVHKwq/arcgis/rest/services/RoadClosures_public_774396aa56eb440281d01f8e0db788a9/FeatureServer" rel="nofollow noopener">services1.arcgis.com</a></li>
+    </ul>
+  </section>
+
+  <footer>Questions about a source? Email <a href="mailto:support@streetcheat.com">support@streetcheat.com</a>. &copy; 2026 Hantis USA, LLC.</footer>
+</main>
+</body>
+</html>
