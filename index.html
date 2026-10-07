@@ -53,8 +53,9 @@
   .brand .cone { width: 22px; height: 22px; flex: none; }
   h1 { font-size: clamp(32px, 8vw, 48px); line-height: 1.08; letter-spacing: -0.03em; margin: 40px 0 0; font-weight: 700; text-wrap: balance; }
   .lede { font-size: 19px; color: var(--text-2); margin: 16px 0 0; max-width: 34rem; }
-  .soon { display: inline-flex; align-items: center; gap: 8px; margin-top: 26px; padding: 8px 14px; border-radius: 999px; background: var(--amber-bg); border: 1px solid var(--amber-line); font-size: 14px; font-weight: 600; }
-  .soon::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+  /* Neutral on purpose: in the app, amber only ever means a closure on a drive. */
+  .soon { display: inline-flex; align-items: center; gap: 8px; margin-top: 26px; padding: 8px 14px; border-radius: 999px; background: var(--field); border: 1px solid var(--line); font-size: 14px; font-weight: 600; }
+  .soon::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--text); }
   section { padding-block: 34px 4px; }
   h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 16px; }
   ol.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; counter-reset: step; }
