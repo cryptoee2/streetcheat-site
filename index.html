@@ -53,7 +53,11 @@
   .brand .cone { width: 22px; height: 22px; flex: none; }
   h1 { font-size: clamp(32px, 8vw, 48px); line-height: 1.08; letter-spacing: -0.03em; margin: 40px 0 0; font-weight: 700; text-wrap: balance; }
   .lede { font-size: 19px; color: var(--text-2); margin: 16px 0 0; max-width: 34rem; }
-  .soon { display: inline-flex; align-items: center; gap: 8px; margin-top: 26px; padding: 8px 14px; border-radius: 999px; background: var(--amber-bg); border: 1px solid var(--amber-line); font-size: 14px; font-weight: 600; }
+  .get { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 20px; }
+  /* The official badge image has clear space built in; the negative margin lines its edge up with the text. */
+  .play-badge { display: block; margin-left: -10px; line-height: 0; border-radius: 10px; }
+  .play-badge img { display: block; width: auto; height: 64px; }
+  .soon { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: var(--amber-bg); border: 1px solid var(--amber-line); font-size: 14px; font-weight: 600; }
   .soon::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
   section { padding-block: 34px 4px; }
   h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 16px; }
@@ -84,7 +88,12 @@
     </div>
     <h1>Know about closures before they happen.</h1>
     <p class="lede">StreetCheat watches the drives you make most (home to work, school drop-off, the weekly run to the job site) and tells you when a road closure is in your way, before you leave.</p>
-    <div class="soon">Coming soon to Android and iPhone</div>
+    <div class="get">
+      <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="646" height="250">
+      </a>
+      <div class="soon">iPhone coming soon</div>
+    </div>
   </header>
 
   <section>
