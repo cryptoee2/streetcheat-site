@@ -3,8 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
 <title>StreetCheat: road closure alerts for the drives you make most</title>
 <meta name="description" content="StreetCheat watches the drives you make most and tells you when a road closure is in your way, before you leave.">
+<link rel="canonical" href="https://streetcheat.com/">
 <meta name="theme-color" content="#0A0C0F">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://streetcheat.com/">
@@ -16,9 +18,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -31,6 +32,7 @@
       <a class="page-link" href="/#pricing">Pricing</a>
       <a href="/support/">Support</a>
     </nav>
+    <details class="menu"><summary>Menu</summary><nav aria-label="Menu"><a href="/#how">How it works</a><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/support/">Support</a><a href="/sources/">Data sources</a><a href="https://play.google.com/store/apps/details?id=com.streetcheat.app">Get the Android app</a></nav></details>
     <a class="btn" href="https://play.google.com/store/apps/details?id=com.streetcheat.app">Get the Android app</a>
   </div>
 </header>
@@ -43,7 +45,7 @@
         <h1>Know about closures before they happen.</h1>
         <p class="lede">StreetCheat watches the drives you make most (home to work, school drop-off, the weekly run to the job site) and tells you when a road closure is in your way, before you leave.</p>
         <div class="cta-row">
-          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="646" height="250"></a>
+          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="/images/google-play-badge.png" alt="Get it on Google Play" width="646" height="250"></a>
           <span class="soon">iPhone coming soon</span>
         </div>
         <ul class="ticks row">
@@ -302,7 +304,7 @@
           <p>Road closure alerts for the drives you make most.</p>
         </div>
         <div class="get">
-          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" width="646" height="250"></a>
+          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="/images/google-play-badge.png" alt="Get it on Google Play" width="646" height="250"></a>
           <span class="soon">iPhone coming soon</span>
         </div>
       </div>
@@ -312,7 +314,7 @@
 
 <footer class="footer">
   <div class="wrap">
-    <p>&copy; 2026 Hantis USA, LLC. StreetCheat uses public closure data and is not affiliated with any transportation department or city.</p>
+    <p>&copy; <span data-year>2026</span> Hantis USA, LLC. StreetCheat uses public closure data and is not affiliated with any transportation department or city.</p>
     <nav aria-label="Footer">
       <a href="/privacy/">Privacy</a>
       <a href="/privacy/#delete-account">Delete your account</a>
@@ -321,5 +323,6 @@
     </nav>
   </div>
 </footer>
+<script src="/site.js" defer></script>
 </body>
 </html>
