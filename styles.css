@@ -4,6 +4,20 @@
  * drive and nothing else; blue is "checked, and clear"; everything else is grey.
  */
 
+/* Fonts come from this site, so pages make no request to Google: Inter (variable, every weight) and Barlow
+   Condensed 800 (the only weight used), Latin subset, from Fontsource. SIL Open Font License: fonts/LICENSE-*.txt.
+   Every page preloads both files. */
+@font-face {
+  font-family: Inter; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Barlow Condensed"; font-style: normal; font-weight: 800; font-display: swap;
+  src: url("/fonts/barlow-condensed-latin-800-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --bg: #0A0C0F;
   --band: #0F1216;
@@ -55,6 +69,22 @@ a:hover { text-decoration-color: var(--text); }
 .topbar nav { margin-left: auto; display: flex; gap: 28px; }
 .topbar nav a { color: var(--text-2); text-decoration: none; font-size: 15px; font-weight: 500; }
 .topbar nav a:hover, .topbar nav a[aria-current="page"] { color: var(--text); }
+
+/* phone menu: a <details> that takes the place of the top links under 860px (site.js closes it after a choice) */
+.menu { display: none; position: relative; margin-left: auto; }
+.menu summary {
+  list-style: none; cursor: pointer; padding: 7px 16px; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--text); font-size: 15px; font-weight: 500;
+}
+.menu summary::-webkit-details-marker { display: none; }
+.menu[open] summary { background: var(--surface-2); }
+.topbar .menu nav {
+  position: absolute; right: 0; top: calc(100% + 10px); z-index: 20; display: grid; gap: 2px; min-width: 230px;
+  margin: 0; padding: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+.topbar .menu nav a { padding: 11px 14px; border-radius: 10px; color: var(--text-2); font-size: 16px; }
+.topbar .menu nav a:hover, .topbar .menu nav a[aria-current="page"] { background: var(--surface-2); color: var(--text); }
 
 /* the app's primary button: white, ink label */
 .btn {
@@ -169,8 +199,9 @@ h3 { margin: 0 0 8px; font-size: 19px; line-height: 1.3; font-weight: 700; lette
 .faq .answer p { margin: 0 0 10px; }
 .faq .answer > :last-child { margin-bottom: 0; }
 .faq .answer strong { color: var(--text); font-weight: 600; }
-.faq .answer a { color: var(--clear); text-decoration: none; }
-.faq .answer a:hover { text-decoration: underline; }
+/* underlined, not just blue, so a link in an answer doesn't rely on color alone */
+.faq .answer a { color: var(--clear); text-decoration-color: rgba(108, 180, 255, 0.45); }
+.faq .answer a:hover { text-decoration-color: var(--clear); }
 
 .cta-card {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 40px;
@@ -245,7 +276,8 @@ ul.sources li a { max-width: 45%; overflow: hidden; color: var(--muted); text-ov
 
 @media (max-width: 860px) {
   :root { --gutter: 20px; }
-  .topbar nav a.page-link { display: none; }
+  .topbar .wrap > nav { display: none; }
+  .menu { display: block; }
   .hero { padding-block: 48px 64px; }
   .hero .wrap, .feature .wrap, .split { grid-template-columns: 1fr; gap: 44px; }
   .hero-phones { height: 560px; max-width: 470px; width: 100%; margin: 0 auto; }

@@ -3,14 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
 <title>StreetCheat Support</title>
 <meta name="description" content="Help with StreetCheat: routes, shifts, alerts, coverage, your account and your data.">
+<link rel="canonical" href="https://streetcheat.com/support/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://streetcheat.com/support/">
+<meta property="og:title" content="StreetCheat Support">
+<meta property="og:description" content="Help with StreetCheat: routes, shifts, alerts, coverage, your account and your data.">
+<meta property="og:image" content="https://streetcheat.com/images/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0A0C0F">
 <link rel="icon" type="image/png" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -23,6 +32,7 @@
       <a class="page-link" href="/#pricing">Pricing</a>
       <a href="/support/" aria-current="page">Support</a>
     </nav>
+    <details class="menu"><summary>Menu</summary><nav aria-label="Menu"><a href="/#how">How it works</a><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/support/" aria-current="page">Support</a><a href="/sources/">Data sources</a><a href="https://play.google.com/store/apps/details?id=com.streetcheat.app">Get the Android app</a></nav></details>
     <a class="btn" href="https://play.google.com/store/apps/details?id=com.streetcheat.app">Get the Android app</a>
   </div>
 </header>
@@ -136,7 +146,7 @@
 
 <footer class="footer">
   <div class="wrap">
-    <p>&copy; 2026 Hantis USA, LLC. StreetCheat uses public closure data and is not affiliated with any transportation department or city.</p>
+    <p>&copy; <span data-year>2026</span> Hantis USA, LLC. StreetCheat uses public closure data and is not affiliated with any transportation department or city.</p>
     <nav aria-label="Footer">
       <a href="/privacy/">Privacy</a>
       <a href="/privacy/#delete-account">Delete your account</a>
@@ -145,5 +155,6 @@
     </nav>
   </div>
 </footer>
+<script src="/site.js" defer></script>
 </body>
 </html>
