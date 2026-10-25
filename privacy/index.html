@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self'; script-src 'self' https://*.googletagmanager.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
 <title>StreetCheat Privacy Policy</title>
 <meta name="description" content="What StreetCheat collects, why, who helps us run it, and how to delete your account.">
 <link rel="canonical" href="https://streetcheat.com/privacy/">
@@ -20,6 +20,8 @@
 <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/barlow-condensed-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4PGCED93CX"></script>
+<script src="/analytics.js"></script>
 </head>
 <body>
 <header class="topbar">
@@ -39,7 +41,7 @@
 <main class="doc">
   <header>
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated September 23, 2026</p>
+    <p class="updated">Last updated October 25, 2026</p>
     <p class="lede">StreetCheat checks the drives you make most against public road-closure data and tells you when something is in your way. This page explains what that takes from you, who helps us do it, and how to delete it all.</p>
   </header>
 
@@ -52,13 +54,14 @@
       <li><a href="#recipients">People you add</a></li>
       <li><a href="#retention">How long we keep it</a></li>
       <li><a href="#delete-account">Delete your account</a></li>
+      <li><a href="#website">This website</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
   <section>
     <h2 id="who">Who we are</h2>
-    <p>StreetCheat is operated by <strong>Hantis USA, LLC</strong> ("we", "us"). This policy covers the StreetCheat app for Android and iPhone and the alert emails and notifications it sends.</p>
+    <p>StreetCheat is operated by <strong>Hantis USA, LLC</strong> ("we", "us"). This policy covers the StreetCheat app for Android and iPhone the alert emails and notifications it sends, and this website, streetcheat.com.</p>
   </section>
 
   <section>
@@ -119,6 +122,7 @@
           <tr><td>Expo</td><td>Passes notifications to Apple and Google, and delivers app updates</td><td>Push token and notification contents</td></tr>
           <tr><td>Resend</td><td>Delivers our emails</td><td>Recipient addresses and the email contents</td></tr>
           <tr><td>GitHub</td><td>Runs our hourly route checks</td><td>Route and alert information while a check runs</td></tr>
+          <tr><td>Google Analytics</td><td>Counts visits to streetcheat.com (the website only, not the app)</td><td>What your browser sends when you visit the website (see <a href="#website">This website</a>)</td></tr>
         </tbody>
       </table>
     </div>
@@ -149,6 +153,12 @@
     </ol>
     <p>This deletes your account, routes, settings, notification history, reports and votes.</p>
     <p><strong>Without the app:</strong> email <span class="email">support@streetcheat.com</span> from the address on your account, with the subject "Delete my account". We'll confirm and complete it within 30 days.</p>
+  </section>
+
+  <section>
+    <h2 id="website">This website</h2>
+    <p>streetcheat.com uses <strong>Google Analytics</strong> to count visits and see which pages are read, so we know what is useful. It sets cookies in your browser and receives the page you visited, the site that sent you, your browser and device type, and your approximate location (city or region, worked out from your IP address, which Google Analytics does not store). We have turned off Google's advertising features for it, so this information is not used to show you ads.</p>
+    <p>The app does not use Google Analytics or any other analytics. To stop being counted on the website, block cookies for streetcheat.com in your browser or use Google's <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">opt-out add-on</a>. More about how Google uses this information: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener">policies.google.com/technologies/partner-sites</a>.</p>
   </section>
 
   <section>
