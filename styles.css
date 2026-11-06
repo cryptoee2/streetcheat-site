@@ -102,15 +102,11 @@ a:hover { text-decoration-color: var(--text); }
 .hero .play-badge img { height: 76px; }
 .get { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
 
-/* Not on the App Store yet: a label, not a button. */
-.soon {
-  display: inline-flex; align-items: center; gap: 9px;
-  padding: 9px 16px; border-radius: 999px;
-  background: var(--surface-2); border: 1px solid var(--line);
-  font-size: 14px; font-weight: 600; white-space: nowrap; color: var(--text);
-}
-.soon::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--clear); box-shadow: 0 0 0 4px rgba(108, 180, 255, 0.16); }
-.soon.big { padding: 14px 22px; font-size: 16px; }
+/* Apple's official badge has no clear space built in, so it is sized to the
+   Google badge's visible artwork: 168 of its 250 px. */
+.app-badge { display: inline-block; line-height: 0; border-radius: 9px; }
+.app-badge img { width: auto; height: 43px; }
+.hero .app-badge img { height: 51px; }
 
 /* ---------- type ---------- */
 
@@ -304,5 +300,4 @@ ul.sources li a { max-width: 45%; overflow: hidden; color: var(--muted); text-ov
   .cards.four, .cards.who { grid-template-columns: 1fr; }
   .card { padding: 24px; }
   .doc { padding-top: 44px; }
-  .soon.big { white-space: normal; padding: 12px 18px; font-size: 15px; }
 }
