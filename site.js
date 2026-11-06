@@ -15,3 +15,10 @@ document.querySelectorAll('details.menu').forEach(menu => {
     if (e.key === 'Escape' && menu.open) { menu.open = false; menu.querySelector('summary').focus(); }
   });
 });
+
+// "Get the app" in the top bar: straight to the phone's own store; on a computer, the download section,
+// which shows both badges. iPads that ask for the desktop site call themselves Macintosh, with a touch screen.
+const store = /iPhone|iPad|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1)
+  ? 'https://apps.apple.com/us/app/streetcheat-road-closures/id6816572317'
+  : /Android/.test(navigator.userAgent) ? 'https://play.google.com/store/apps/details?id=com.streetcheat.app' : null;
+if (store) document.querySelectorAll('[data-get-app]').forEach(a => { a.href = store; });
