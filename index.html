@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self'; script-src 'self' https://*.googletagmanager.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
 <title>StreetCheat: road closure alerts for the drives you make most</title>
-<meta name="description" content="StreetCheat watches the drives you make most and tells you when a road closure is in your way, before you leave.">
+<meta name="description" content="StreetCheat watches the drives you make most and tells you when a road closure is in your way, before you leave. On iPhone and Android.">
 <link rel="canonical" href="https://streetcheat.com/">
 <meta name="theme-color" content="#0A0C0F">
+<meta name="apple-itunes-app" content="app-id=6816572317">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="StreetCheat">
 <meta property="og:url" content="https://streetcheat.com/">
 <meta property="og:title" content="StreetCheat: know about closures before they happen">
 <meta property="og:description" content="StreetCheat watches the drives you make most and tells you when a road closure is in your way, before you leave.">
@@ -23,6 +25,25 @@
 <link rel="stylesheet" href="/styles.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4PGCED93CX"></script>
 <script src="/analytics.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "StreetCheat: Road Closures",
+  "alternateName": "StreetCheat",
+  "url": "https://streetcheat.com/",
+  "image": "https://streetcheat.com/icon.png",
+  "description": "StreetCheat watches the drives you make most and tells you when a road closure is in your way, before you leave.",
+  "applicationCategory": "NavigationApplication",
+  "operatingSystem": "iOS, Android",
+  "installUrl": [
+    "https://apps.apple.com/us/app/streetcheat-road-closures/id6816572317",
+    "https://play.google.com/store/apps/details?id=com.streetcheat.app"
+  ],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "name": "Hantis USA, LLC", "url": "https://streetcheat.com/" }
+}
+</script>
 </head>
 <body>
 <header class="topbar">
@@ -31,10 +52,11 @@
     <nav aria-label="Main">
       <a class="page-link" href="/#how">How it works</a>
       <a class="page-link" href="/#features">Features</a>
+      <a class="page-link" href="/#where">Coverage</a>
       <a class="page-link" href="/#pricing">Pricing</a>
       <a href="/support/">Support</a>
     </nav>
-    <details class="menu"><summary>Menu</summary><nav aria-label="Menu"><a href="/#how">How it works</a><a href="/#features">Features</a><a href="/#pricing">Pricing</a><a href="/support/">Support</a><a href="/sources/">Data sources</a><a href="/#download" data-get-app>Get the app</a></nav></details>
+    <details class="menu"><summary>Menu</summary><nav aria-label="Menu"><a href="/#how">How it works</a><a href="/#features">Features</a><a href="/#where">Coverage</a><a href="/#pricing">Pricing</a><a href="/support/">Support</a><a href="/sources/">Data sources</a><a href="/#download" data-get-app>Get the app</a></nav></details>
     <a class="btn" href="/#download" data-get-app>Get the app</a>
   </div>
 </header>
@@ -47,19 +69,39 @@
         <h1>Know about closures before they happen.</h1>
         <p class="lede">StreetCheat watches the drives you make most (home to work, school drop-off, the weekly run to the job site) and tells you when a road closure is in your way, before you leave.</p>
         <div class="cta-row">
-          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="/images/google-play-badge.png" alt="Get it on Google Play" width="646" height="250"></a>
           <a class="app-badge" href="https://apps.apple.com/us/app/streetcheat-road-closures/id6816572317"><img src="/images/app-store-badge.svg" alt="Download on the App Store" width="120" height="40"></a>
+          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="/images/google-play-badge.png" alt="Get it on Google Play" width="646" height="250"></a>
         </div>
         <ul class="ticks row">
           <li>Free for our first 500 members</li>
-          <li>All 50 states</li>
-          <li>Rotating shifts</li>
+          <li>No location tracking</li>
+          <li>No ads</li>
         </ul>
       </div>
       <div class="hero-phones">
         <img class="phone back" src="/images/phone-route.webp" width="640" height="1270" alt="StreetCheat's route screen: the drive from home to work on a map, a closure marked on it, and the next drive, Wednesday at 6:15 AM, with 1 closure.">
         <img class="phone front" src="/images/phone-home.webp" width="640" height="1270" alt="StreetCheat's home screen: next drive in 40 minutes, 1 closure, Wednesday 6:15 AM, Home to Work, construction on I-30 westbound.">
+        <!-- the app's own wording for a new-closure notification (alert.py, build_push) -->
+        <div class="notif" role="img" aria-label="A StreetCheat notification: 1 new closure on Home to Work. Wed 6:15 AM drive: Construction on I-30 westbound, 9:00 AM to 4:00 PM.">
+          <img src="/icon.png" alt="" width="40" height="40">
+          <div>
+            <p class="notif-meta"><span>StreetCheat</span><span>now</span></p>
+            <p class="notif-title">1 new closure on <span class="nw">Home &rarr; Work</span></p>
+            <p class="notif-body">Wed 6:15 AM drive: Construction on <span class="nw">I-30</span> westbound <span class="nw">9:00 AM-4:00 PM.</span></p>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="StreetCheat at a glance">
+    <div class="wrap">
+      <ul>
+        <li><strong>50</strong><span>states' highways</span></li>
+        <li><strong>400+</strong><span>cities and counties</span></li>
+        <li><strong>Every hour</strong><span>each route is checked</span></li>
+        <li><strong>3 routes</strong><span>free for early members</span></li>
+      </ul>
     </div>
   </section>
 
@@ -69,99 +111,135 @@
         <p class="eyebrow">How it works</p>
         <h2>Set it up once. Hear about it first.</h2>
       </div>
-      <div class="cards three">
-        <div class="card">
-          <span class="num">1</span>
+      <ol class="steps">
+        <li>
+          <span class="num" aria-hidden="true">1</span>
           <h3>Add a route once</h3>
           <p>Where from, where to, which days, and what time you leave. On a rotating shift? Pick your pattern.</p>
-        </div>
-        <div class="card">
-          <span class="num">2</span>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">2</span>
           <h3>We check it every hour</h3>
           <p>Against official closure information from state transportation departments and city and county governments.</p>
-        </div>
-        <div class="card">
-          <span class="num">3</span>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">3</span>
           <h3>You hear about it first</h3>
           <p>A notification when something is on your way and, if you like, an email summary the evening before.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Features</p>
+        <h2>Built around the drives you make</h2>
+      </div>
+      <!-- One phone, four screens: on a computer the chosen feature's screen shows beside the list (radio buttons
+           and CSS, no script); on a phone each feature simply sits above its own screen. -->
+      <div class="tabs" role="radiogroup" aria-label="Features">
+        <article class="tab">
+          <input type="radio" name="feature" id="feature-drive" checked>
+          <div class="tab-text">
+            <h3><label for="feature-drive">Is your next drive clear?</label></h3>
+            <div class="tab-body"><div>
+              <p>Open StreetCheat and the answer is at the top: your next drive and anything in its way, then the week ahead, day by day.</p>
+              <ul class="ticks">
+                <li><strong>Your actual route.</strong> Closures on the roads you drive, not every closure in the city.</li>
+                <li><strong>Only when you drive.</strong> A daytime lane closure won't bother you on a 5 AM commute.</li>
+                <li><strong>A way around.</strong> See whether an alternate route is clear.</li>
+              </ul>
+            </div></div>
+          </div>
+          <div class="shot">
+            <img class="phone" src="/images/phone-week.webp" width="640" height="1270" loading="lazy" alt="A route in StreetCheat: Home to Work, the next drive today at 6:15 AM with 1 closure, and today plus 7 days with a dot under each day that has a closure.">
+          </div>
+        </article>
+
+        <article class="tab">
+          <input type="radio" name="feature" id="feature-closure">
+          <div class="tab-text">
+            <h3><label for="feature-closure">See exactly what's closed</label></h3>
+            <div class="tab-body"><div>
+              <p>Tap a closure for what it is, which direction, and the days and hours it's in place, with the agency's own notes word for word.</p>
+              <ul class="ticks">
+                <li><strong>Straight from the source.</strong> State transportation departments and city and county open data. <a href="/sources/">See every source</a>.</li>
+                <li><strong>A reminder before you leave.</strong> One tap, and StreetCheat nudges you before that drive.</li>
+                <li><strong>Word when it changes.</strong> Hear when a closure on your drive changes or clears.</li>
+              </ul>
+            </div></div>
+          </div>
+          <div class="shot">
+            <img class="phone" src="/images/phone-closure.webp" width="640" height="1270" loading="lazy" alt="A closure in StreetCheat: construction on I-30 westbound, one lane, 9:00 AM to 4:00 PM daily from Wednesday to Saturday, with the agency's own description.">
+          </div>
+        </article>
+
+        <article class="tab">
+          <input type="radio" name="feature" id="feature-shifts">
+          <div class="tab-text">
+            <h3><label for="feature-shifts">Built for rotating shifts</label></h3>
+            <div class="tab-body"><div>
+              <p>Pick your pattern, tap your first day on, and StreetCheat knows every drive after that. Made for nurses, first responders and anyone on a rotation.</p>
+              <ul class="ticks">
+                <li><strong>Ready-made patterns.</strong> From <span class="nw">1 on / 2 off</span> to <span class="nw">7 on / 7 off</span>, plus <span class="nw">2-2-3</span>.</li>
+                <li><strong>Or build your own.</strong> Any run of days on and days off.</li>
+                <li><strong>Regular hours too.</strong> Or pick the same days every week, like Monday to Friday.</li>
+              </ul>
+            </div></div>
+          </div>
+          <div class="shot">
+            <img class="phone" src="/images/phone-shift.webp" width="640" height="1270" loading="lazy" alt="Adding a route in StreetCheat: a 4 on / 4 off shift pattern on an October calendar, with the next drives listed underneath.">
+          </div>
+        </article>
+
+        <article class="tab">
+          <input type="radio" name="feature" id="feature-alerts">
+          <div class="tab-text">
+            <h3><label for="feature-alerts">A heads-up, not a flood</label></h3>
+            <div class="tab-body"><div>
+              <p>You hear about closures on the drives you make, and nothing about the rest of the city.</p>
+              <ul class="ticks">
+                <li><strong>Quiet hours.</strong> Alerts wait until your quiet hours end. A leaving-soon reminder still gets through.</li>
+                <li><strong>The evening before.</strong> An email for each route whose next drive has closures, at the time you choose.</li>
+                <li><strong>Every Sunday.</strong> A week-ahead preview of every drive, even when they're all clear.</li>
+              </ul>
+            </div></div>
+          </div>
+          <div class="shot">
+            <img class="phone" src="/images/phone-alerts.webp" width="640" height="1270" loading="lazy" alt="StreetCheat's Alerts tab: a new closure on Home to Work, waiting for quiet hours to end, with a question asking whether the alert was useful.">
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="where">
+    <div class="wrap split top">
+      <div>
+        <p class="eyebrow">Where it works</p>
+        <h2>All 50 states and about 400 cities and counties</h2>
+        <div class="prose">
+          <p>State highways in all 50 states, plus city and county streets in Los Angeles, New York, Chicago, Houston, Phoenix, Philadelphia, San Antonio, San Diego, Dallas, Austin, Indianapolis, Nashville, Las Vegas, Washington DC, Boston, Miami, Seattle, Denver, Detroit and more than 380 other cities and counties.</p>
+          <p>Each route shows which sources it's checked against, and tells you plainly when an area isn't covered yet.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section feature" id="features">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow">Your next drive</p>
-        <h2>Is your next drive clear?</h2>
-        <p class="lede">Open StreetCheat and the answer is at the top: your next drive and anything in its way, then the week ahead, day by day.</p>
-        <ul class="ticks">
-          <li><strong>Your actual route.</strong> Closures on the roads you drive, not every closure in the city.</li>
-          <li><strong>Only when you drive.</strong> A daytime lane closure won't bother you on a 5 AM commute.</li>
-          <li><strong>A way around.</strong> See whether an alternate route is clear.</li>
-        </ul>
-      </div>
-      <div class="shot">
-        <img class="phone" src="/images/phone-week.webp" width="640" height="1270" loading="lazy" alt="A route in StreetCheat: Home to Work, the next drive today at 6:15 AM with 1 closure, and today plus 7 days with a dot under each day that has a closure.">
+      <!-- The search reads /coverage.json, which make_sources_page.py writes from the same list as the Data sources
+           page. Without scripts the box stays hidden and the link below it is the way in. -->
+      <div class="checker" data-coverage>
+        <div class="checker-search" hidden>
+          <label for="coverage-q">Is your area covered?</label>
+          <input id="coverage-q" type="search" placeholder="City, county or state" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="search">
+          <p class="checker-try">Try <button type="button" data-try="Chicago">Chicago</button> <button type="button" data-try="Maricopa County">Maricopa County</button> <button type="button" data-try="Texas">Texas</button></p>
+          <div class="checker-results" data-results aria-live="polite"></div>
+        </div>
+        <a class="more" href="/sources/">See every source &rarr;</a>
       </div>
     </div>
   </section>
 
-  <section class="section feature flip">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow">Closure details</p>
-        <h2>See exactly what's closed</h2>
-        <p class="lede">Tap a closure for what it is, which direction, and the days and hours it's in place, with the agency's own notes word for word.</p>
-        <ul class="ticks">
-          <li><strong>Straight from the source.</strong> State transportation departments and city and county open data. <a href="/sources/">See every source</a>.</li>
-          <li><strong>A reminder before you leave.</strong> One tap, and StreetCheat nudges you before that drive.</li>
-          <li><strong>Word when it changes.</strong> Hear when a closure on your drive changes or clears.</li>
-        </ul>
-      </div>
-      <div class="shot">
-        <img class="phone" src="/images/phone-closure.webp" width="640" height="1270" loading="lazy" alt="A closure in StreetCheat: construction on I-30 westbound, one lane, 9:00 AM to 4:00 PM daily from Wednesday to Saturday, with the agency's own description.">
-      </div>
-    </div>
-  </section>
-
-  <section class="section feature">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow">Shift work</p>
-        <h2>Built for rotating shifts</h2>
-        <p class="lede">Pick your pattern, tap your first day on, and StreetCheat knows every drive after that. Made for nurses, first responders and anyone on a rotation.</p>
-        <ul class="ticks">
-          <li><strong>Ready-made patterns.</strong> From <span class="nw">1 on / 2 off</span> to <span class="nw">7 on / 7 off</span>, plus <span class="nw">2-2-3</span>.</li>
-          <li><strong>Or build your own.</strong> Any run of days on and days off.</li>
-          <li><strong>Regular hours too.</strong> Or pick the same days every week, like Monday to Friday.</li>
-        </ul>
-      </div>
-      <div class="shot">
-        <img class="phone" src="/images/phone-shift.webp" width="640" height="1270" loading="lazy" alt="Adding a route in StreetCheat: a 4 on / 4 off shift pattern on an October calendar, with the next drives listed underneath.">
-      </div>
-    </div>
-  </section>
-
-  <section class="section feature flip">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow">Alerts</p>
-        <h2>A heads-up, not a flood</h2>
-        <p class="lede">You hear about closures on the drives you make, and nothing about the rest of the city.</p>
-        <ul class="ticks">
-          <li><strong>Quiet hours.</strong> Alerts wait until your quiet hours end. A leaving-soon reminder still gets through.</li>
-          <li><strong>The evening before.</strong> An email for each route whose next drive has closures, at the time you choose.</li>
-          <li><strong>Every Sunday.</strong> A week-ahead preview of every drive, even when they're all clear.</li>
-        </ul>
-      </div>
-      <div class="shot">
-        <img class="phone" src="/images/phone-alerts.webp" width="640" height="1270" loading="lazy" alt="StreetCheat's Alerts tab: a new closure on Home to Work, waiting for quiet hours to end, with a question asking whether the alert was useful.">
-      </div>
-    </div>
-  </section>
-
-  <section class="section band">
+  <section class="section">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Who it's for</p>
@@ -170,34 +248,34 @@
       <!-- Illustrations: Fluent Emoji, MIT License, (c) Microsoft Corporation (see /images/LICENSE-fluentui-emoji.txt) -->
       <div class="cards who">
         <div class="card">
-          <img src="/images/who-commute.webp" width="64" height="64" alt="">
+          <img src="/images/who-commute.webp" width="64" height="64" loading="lazy" alt="">
           <div><h3>Commuters</h3><p>Home to work and back, checked before you leave.</p></div>
         </div>
         <div class="card">
-          <img src="/images/who-shifts.webp" width="64" height="64" alt="">
+          <img src="/images/who-shifts.webp" width="64" height="64" loading="lazy" alt="">
           <div><h3>Shift workers</h3><p>Rotating schedules built in, from <span class="nw">1 on / 2 off</span> to <span class="nw">7 on / 7 off</span>.</p></div>
         </div>
         <div class="card">
-          <img src="/images/who-school.webp" width="64" height="64" alt="">
+          <img src="/images/who-school.webp" width="64" height="64" loading="lazy" alt="">
           <div><h3>School runs</h3><p>Drop-off and pickup without the surprise detour.</p></div>
         </div>
         <div class="card">
-          <img src="/images/who-crews.webp" width="64" height="64" alt="">
+          <img src="/images/who-crews.webp" width="64" height="64" loading="lazy" alt="">
           <div><h3>Contractors and crews</h3><p>The weekly run to the job site, checked every hour.</p></div>
         </div>
         <div class="card">
-          <img src="/images/who-share.webp" width="64" height="64" alt="">
+          <img src="/images/who-share.webp" width="64" height="64" loading="lazy" alt="">
           <div><h3>Carpools and family</h3><p>Send a route's alerts to someone who makes the same drive.</p></div>
         </div>
         <div class="card">
-          <img src="/images/who-early.webp" width="64" height="64" alt="">
+          <img src="/images/who-early.webp" width="64" height="64" loading="lazy" alt="">
           <div><h3>Early starts</h3><p>Closures are matched to the hour you drive, day or night.</p></div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section band">
     <div class="wrap">
       <div class="section-head">
         <p class="eyebrow">Why trust it</p>
@@ -228,20 +306,6 @@
     </div>
   </section>
 
-  <section class="section band" id="where">
-    <div class="wrap split">
-      <div>
-        <p class="eyebrow">Where it works</p>
-        <h2>All 50 states and about 400 cities and counties</h2>
-      </div>
-      <div class="prose">
-        <p>State highways in all 50 states, plus city and county streets in Los Angeles, New York, Chicago, Houston, Phoenix, Philadelphia, San Antonio, San Diego, Dallas, Austin, Indianapolis, Nashville, Las Vegas, Washington DC, Boston, Miami, Seattle, Denver, Detroit and more than 380 other cities and counties.</p>
-        <p>Each route shows which sources it's checked against, and tells you plainly when an area isn't covered yet.</p>
-        <a class="more" href="/sources/">See every source &rarr;</a>
-      </div>
-    </div>
-  </section>
-
   <section class="section" id="pricing">
     <div class="wrap split">
       <div>
@@ -256,17 +320,20 @@
           <li><strong>Each one checked every hour</strong></li>
           <li><strong>Email alerts</strong> to one address per route</li>
         </ul>
-        <a class="btn block" href="https://play.google.com/store/apps/details?id=com.streetcheat.app">Get it on Google Play</a>
-        <p class="fine">On iPhone? <a href="https://apps.apple.com/us/app/streetcheat-road-closures/id6816572317">Get it on the App Store</a>.</p>
+        <div class="get">
+          <a class="app-badge" href="https://apps.apple.com/us/app/streetcheat-road-closures/id6816572317"><img src="/images/app-store-badge.svg" alt="Download on the App Store" width="120" height="40"></a>
+          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="/images/google-play-badge.png" alt="Get it on Google Play" width="646" height="250"></a>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="section band" id="faq">
-    <div class="wrap">
+    <div class="wrap split top">
       <div class="section-head">
         <p class="eyebrow">Questions</p>
         <h2>Good to know</h2>
+        <p class="fine">More answers on the <a href="/support/">support page</a>.</p>
       </div>
       <div class="faq">
         <details open>
@@ -294,7 +361,6 @@
           <div class="answer"><p>In the app, open <strong>Settings</strong> and tap <strong>Delete account</strong>. Without the app, email <a href="mailto:support@streetcheat.com">support@streetcheat.com</a> from the address on your account. <a href="/privacy/#delete-account">More about deleting your account</a>.</p></div>
         </details>
       </div>
-      <p class="fine">More answers on the <a href="/support/">support page</a>.</p>
     </div>
   </section>
 
@@ -303,11 +369,11 @@
       <div class="cta-card">
         <div>
           <h2>Know before you leave</h2>
-          <p>Road closure alerts for the drives you make most.</p>
+          <p>Road closure alerts for the drives you make most. Free on iPhone and Android.</p>
         </div>
         <div class="get">
-          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="/images/google-play-badge.png" alt="Get it on Google Play" width="646" height="250"></a>
           <a class="app-badge" href="https://apps.apple.com/us/app/streetcheat-road-closures/id6816572317"><img src="/images/app-store-badge.svg" alt="Download on the App Store" width="120" height="40"></a>
+          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.streetcheat.app"><img src="/images/google-play-badge.png" alt="Get it on Google Play" width="646" height="250"></a>
         </div>
       </div>
     </div>
@@ -316,14 +382,19 @@
 
 <footer class="footer">
   <div class="wrap">
-    <p>&copy; <span data-year>2026</span> Hantis USA, LLC. StreetCheat uses public closure data and is not affiliated with any transportation department or city.</p>
-    <nav aria-label="Footer">
-      <a href="/privacy/">Privacy</a>
-      <a href="/terms/">Terms</a>
-      <a href="/privacy/#delete-account">Delete your account</a>
-      <a href="/sources/">Data sources</a>
-      <a href="/support/">Support</a>
-    </nav>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="/"><img src="/icon.png" alt="" width="34" height="34">StreetCheat</a>
+        <p>Road closure alerts for the drives you make most.</p>
+      </div>
+      <nav aria-label="Footer">
+        <div><p>Product</p><a href="/#how">How it works</a><a href="/#features">Features</a><a href="/#where">Coverage</a><a href="/#pricing">Pricing</a></div>
+        <div><p>Help</p><a href="/support/">Support</a><a href="/sources/">Data sources</a><a href="/privacy/#delete-account">Delete your account</a></div>
+        <div><p>Get the app</p><a href="https://apps.apple.com/us/app/streetcheat-road-closures/id6816572317">App Store</a><a href="https://play.google.com/store/apps/details?id=com.streetcheat.app">Google Play</a></div>
+        <div><p>Legal</p><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></div>
+      </nav>
+    </div>
+    <p class="footer-fine">&copy; <span data-year>2026</span> Hantis USA, LLC. StreetCheat uses public closure data and is not affiliated with any transportation department or city.</p>
   </div>
 </footer>
 <script src="/site.js" defer></script>
